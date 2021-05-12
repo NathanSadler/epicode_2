@@ -1,0 +1,10 @@
+This is a webpage that lets users enter the lengths of a triangle in a form.
+When they click submit button, the program tells the user what type of triangle
+it is.
+
+To start it,
+Go to main directory
+run 'bundle install'
+then run ruby app.rb
+
+By Nathan Sadler
