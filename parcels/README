@@ -1,0 +1,10 @@
+This is a webpage that lets users enter the length, width, height, and weight of
+a parcel. When they click submit button, the program tells the user how much it
+will cost to ship the package.
+
+To start it,
+Go to main directory
+run 'bundle install'
+then run ruby app.rb
+
+By Nathan Sadler
