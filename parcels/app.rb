@@ -1,5 +1,6 @@
 require('sinatra')
 require('sinatra/reloader')
+require('./lib/parcel')
 also_reload('lib/**/*.rb')
 
 get('/') do
@@ -14,7 +15,6 @@ post('/parcel') do
   @subject_parcel = Parcel.new(params[:package_length].to_f,
     params[:package_width].to_f, params[:package_height].to_f,
     params[:package_weight].to_f)
-  @subject_parcel.save
-  @parcel = Parcel.all
+  @shipping_cost = @subject_parcel.cost_to_ship
   erb(:parcel_result)
 end
