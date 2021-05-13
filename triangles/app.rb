@@ -1,6 +1,6 @@
 require('sinatra')
 require('sinatra/reloader')
-#require('triangle')
+require('./lib/triangle')
 also_reload('lib/**/*.rb')
 
 get ('/') do

@@ -73,4 +73,16 @@ describe '#Parcel' do
     end
   end
 
+  describe('#volume') do
+    it("returns the parcel's volume") do
+      expect(@parcel_a.volume).to(eq(24))
+    end
+  end
+
+  describe('#cost_to_ship') do
+    it("returns the cost of shipping this parcel") do
+      parcel_c = Parcel.new(2, 2, 2, 26)
+      expect(parcel_c.cost_to_ship).to(eq(5))
+    end
+  end
 end

@@ -52,4 +52,19 @@ class Parcel
     @@parcels.fetch(id)
   end
 
+  # Returns the package's volume
+  def volume
+    return (@length * @width * @height)
+  end
+
+  # Returns the cost of shipping the package. The cost is half of the volume dollars
+  # plus 1 dollar for every pound over 25
+  def cost_to_ship
+    weight_cost = 0
+    if @weight > 25
+      weight_cost = @weight - 25
+    end
+    (self.volume / 2) + weight_cost
+  end
+
 end
