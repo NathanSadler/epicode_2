@@ -1,12 +1,14 @@
 class Riddle
 
   attr_reader :riddle, :answer
-  @@all_riddles = []
+  @@all_riddles = {}
+  @@riddle_count = 0
 
   def initialize(riddle, answer)
     @riddle = riddle
     @answer = answer
-    @@all_riddles.push(self)
+    @@all_riddles[@@riddle_count] = self
+    @@riddle_count += 1
   end
 
   def right_answer?(given_answer)
