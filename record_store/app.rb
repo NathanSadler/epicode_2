@@ -1,35 +1,61 @@
 require('sinatra')
 require('sinatra/reloader')
+require('./lib/album')
+require('pry')
 also_reload('lib/**/*.rb')
 
+get('/test') do
+  @something = "This is a variable"
+  erb(:whatever)
+end
+
 get('/') do
-  "This will be our home page. '/' is always the root route in a Sinatra application."
+  @albums = Album.all
+  erb(:albums)
 end
 
-get('/records') do
-  "This route will show a list of all records."
+get('/albums') do
+  @albums = Album.all
+  erb(:albums)
 end
 
-get('/records/new') do
-  "This will take us to a page with a form for adding a new record."
+get('/albums/new') do
+  #This will take us to a page with a form for adding a new album.
+  erb(:new_album)
 end
 
-get('/records/:id') do
-  "This route will show a specific record based on its ID. The value of ID here is #{params[:id]}."
+get('/albums/:id') do
+  #This route will show a specific album based on its ID
+  @album = Album.find(params[:id].to_i())
+  erb(:album)
 end
 
-post('/records') do
-  "This route will add a record to our list of records.
+post('/albums') do
+  name = params[:album_name]
+  album = Album.new(name, nil)
+  album.save()
+  @albums = Album.all
+  erb(:albums)
 end
 
-get('/records/:id/edit') do
-  "This will take us to a page with a form for updating a record with an ID of #{params[:id]}."
+get('/albums/:id/edit') do
+  #This will take us to a page with a form for updating a album
+  @album = Album.find(params[:id].to_i)
+  erb(:edit_album)
 end
 
-patch('/records/:id') do
-  "This route will update a record.
+patch('/albums/:id') do
+  #This route will update a album.
+  @album = Album.find(params[:id].to_i())
+  @album.update(params[:name])
+  @albums = Album.all
+  erb(:albums)
 end
 
-delete('/records/:id') do
-  "This route will delete a record. We can't reach it with a URL. In a future lesson, we will use a delete button that specifies a DELETE action to reach this route."
+delete('/albums/:id') do
+  #This route will delete a album.
+  @album = Album.find(params[:id].to_i())
+  @album.delete()
+  @albums = Album.all
+  erb(:albums)
 end
