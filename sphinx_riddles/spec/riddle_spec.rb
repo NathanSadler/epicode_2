@@ -4,6 +4,7 @@ require 'riddle'
 describe '#Riddle' do
   before(:each) do
     @riddle = Riddle.new("What can you put in a bucket to make it lighter?", "A hole")
+    @riddle2 = Riddle.new("The faster you run, the harder it is to catch me. What am I?", "my breath")
   end
 
   describe ('#right_answer?') do

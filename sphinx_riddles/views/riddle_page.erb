@@ -1,0 +1,7 @@
+<h1>Answer all riddles to enter Thebes</h1>
+<form action='/riddle' method="post">
+  <label for="question_text"><%= Riddle.all_riddles[@riddle_id].riddle %></label>
+  <input id="question_text" name="given_answer" type="text">
+  <input id="riddle_id" name="riddle_id" style="display:none;" value="<%= @riddle_id %>">
+  <button type="submit">Submit</button>
+</form>
