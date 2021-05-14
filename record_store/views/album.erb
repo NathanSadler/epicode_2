@@ -2,7 +2,7 @@
 
 <p><a href="/albums/<%= @album.id %>/edit">Edit album</a></p>
 <form action='/buy_album' method='post'>
-  <input type="text" id="album_id" name="album_id" view="hidden" value="<%= @album.id %>">
+  <input type="text" id="album_id" name="album_id" style="display:none;" value="<%= @album.id %>">
   <button type="Submit">Buy This Album</button>
 </form>
 <a href="/albums">Return to album list</a>
