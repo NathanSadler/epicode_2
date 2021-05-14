@@ -1,4 +1,8 @@
 <h4>Album Name: <%= @album.name %></h4>
 
 <p><a href="/albums/<%= @album.id %>/edit">Edit album</a></p>
+<form action='/buy_album' method='post'>
+  <input type="text" id="album_id" name="album_id" view="hidden" value="<%= @album.id %>">
+  <button type="Submit">Buy This Album</button>
+</form>
 <a href="/albums">Return to album list</a>

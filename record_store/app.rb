@@ -11,11 +11,13 @@ end
 
 get('/') do
   @albums = Album.all
+  @sold_albums = Album.sold_albums
   erb(:albums)
 end
 
 get('/albums') do
   @albums = Album.all
+  @sold_albums = Album.sold_albums
   erb(:albums)
 end
 
@@ -35,20 +37,22 @@ post('/albums') do
   album = Album.new(name, nil)
   album.save()
   @albums = Album.all
+  @sold_albums = Album.sold_albums
   erb(:albums)
 end
 
 get('/albums/:id/edit') do
-  #This will take us to a page with a form for updating a album
+  #This will take us to a page with a form for updating an album
   @album = Album.find(params[:id].to_i)
   erb(:edit_album)
 end
 
 patch('/albums/:id') do
-  #This route will update a album.
+  #This route will update an album.
   @album = Album.find(params[:id].to_i())
   @album.update(params[:name])
   @albums = Album.all
+  @sold_albums = Album.sold_albums
   erb(:albums)
 end
 
@@ -57,5 +61,14 @@ delete('/albums/:id') do
   @album = Album.find(params[:id].to_i())
   @album.delete()
   @albums = Album.all
+  @sold_albums = Album.sold_albums
+  erb(:albums)
+end
+
+post('/buy_album') do
+  album = Album.find(params[:album_id].to_i())
+  album.sold
+  @albums = Album.all
+  @sold_albums = Album.sold_albums
   erb(:albums)
 end
