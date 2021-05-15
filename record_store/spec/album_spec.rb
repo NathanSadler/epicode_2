@@ -6,6 +6,7 @@ describe '#Album' do
 
   # Creates and saves albums to use before each test
   before(:each) do
+    Album.clear
     @album = Album.new("Foo Beats", nil, 1984, "Rock", "The Bombadier Beetles")
     @album2 = Album.new("Bar Bars", nil, 1987, "Pop", "The Stationary Stones")
     @album.save
@@ -86,6 +87,18 @@ describe '#Album' do
     it("Returns a list of all albums in the @@sold_albums hash") do
       @album.sold
       expect(Album.sold_albums).to(eq([@album]))
+    end
+  end
+
+  describe('#songs') do
+    it("returns an album's songs") do
+      album = Album.new("Giant Steps", nil)
+      album.save()
+      song = Song.new("Naima", album.id, nil)
+      song.save()
+      song2 = Song.new("Cousin Mary", album.id, nil)
+      song2.save()
+      expect(album.songs).to(eq([song, song2]))
     end
   end
 

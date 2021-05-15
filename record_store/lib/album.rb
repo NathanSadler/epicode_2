@@ -72,4 +72,8 @@ class Album
     @@sold_albums[self.id] = @@albums.delete(self.id)
   end
 
+  def songs
+    Song.find_by_album(self.id)
+  end
+
 end

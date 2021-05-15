@@ -18,7 +18,7 @@
 <% if @sold_albums.any? %>
   <ul>
     <% @sold_albums.each do |album| %>
-      <li><%= album.name %></li>
+      <li class="sold_album"><%= album.name %></li>
     <% end %>
   </ul>
 <% else %>
