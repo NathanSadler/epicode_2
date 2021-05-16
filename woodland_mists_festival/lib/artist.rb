@@ -1,5 +1,3 @@
-require('stage')
-
 class Artist
   @@all_artists = {}
   @@artist_count = 0

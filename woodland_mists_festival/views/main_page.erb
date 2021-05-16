@@ -1,1 +1,24 @@
-<h1>Woodland Mist Festival Stages</h1>
+<h1>Woodland Mist Festival</h1>
+
+<h2>Stages</h2>
+<a href='/create_stage'>Add a new stage</a>
+<% if !@stage_list.empty? %>
+  <ul>
+    <% @stage_list.each do |stage_name| %>
+      <li><%= stage_name.name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no stages.</p>
+<% end %>
+
+<h2>Artists</h2>
+<% if !@artist_list.empty? %>
+  <ul>
+    <% @artist_list.each do |stage_name| %>
+      <li><%= @artist_list.name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no stages.</p>
+<% end %>
