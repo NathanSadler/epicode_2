@@ -5,7 +5,7 @@
 <% if !@stage_list.empty? %>
   <ul>
     <% @stage_list.each do |stage_name| %>
-      <li><%= stage_name.name %></li>
+      <li><a href="stage/<%= stage_name.id %>"><%= stage_name.name %></a></li>
     <% end %>
   </ul>
 <% else %>
