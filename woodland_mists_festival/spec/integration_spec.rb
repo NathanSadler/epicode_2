@@ -1,5 +1,6 @@
 require('capybara/rspec')
 require('./app')
+require('stage')
 Capybara.app = Sinatra::Application
 set(:show_exceptions, false)
 
@@ -34,5 +35,43 @@ describe('create an artist path', {:type => :feature}) do
     select 'Greater Deku Tree', from: 'Stage'
     click_on('Submit')
     expect(page).to have_content('Artist name: Hetsu')
+  end
+  it('Adds the artist to the list of artists on the main page') do
+    visit('/')
+    expect(page).to have_content('Hetsu')
+  end
+end
+
+describe('edit artist', {:type => :feature}) do
+  it('Lets users change the name of the artist') do
+    visit('/artist/0/edit')
+    fill_in('artist_name', :with => "Generic Korok")
+    click_on('Submit')
+    expect(page).to have_content('Artist name: Generic Korok')
+    expect(page).to have_content('Stage: Greater Deku Tree')
+  end
+  it('Lets users change the stage the artist performs on') do
+    Stage.new("Under some rock")
+    visit('/artist/0/edit')
+    select 'Under some rock', from: 'Stage'
+    click_on('Submit')
+    expect(page).to have_content("Stage: Under some rock")
+  end
+end
+
+describe('delete artist', {:type => :feature}) do
+  it('Lets users delete an artist') do
+    visit('/artist/0/edit')
+    click_on('Delete Artist')
+    expect(page).to have_content('There are no artists')
+  end
+end
+
+describe('delete stage', {:type => :feature}) do
+  it('lets users delete a stage') do
+    visit('/stage/0/edit')
+    Stage.get_stage_with_id(1).delete
+    click_on('Delete Stage')
+    expect(page).to have_content('There are no stages')
   end
 end

@@ -9,9 +9,17 @@
       <option value="-1">No Stage</option>
     <% else %>
       <% @stage_list.each do |stage| %>
-        <option value="<%= stage.id %>"><%= stage.name %></option>
+        <% if stage.id == @artist.id %>
+          <option value="<%= stage.id %>" selected><%= stage.name %></option>
+        <% else %>
+          <option value="<%= stage.id %>"><%= stage.name %></option>
+        <% end %>
       <% end %>
     <% end %>
   </select>
   <button type="submit">Submit</button>
+</form>
+<form action="/artist/<%= @artist.id %>" method="post">
+  <input name="_method" type="hidden" value="delete">
+  <button type="submit">Delete Artist</button>
 </form>

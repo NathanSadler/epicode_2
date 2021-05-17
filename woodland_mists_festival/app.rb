@@ -79,3 +79,15 @@ patch('/artist/:id/edit') do
   artist.update_stage(params[:stage_id].to_i)
   redirect to("/artist/#{artist.id}")
 end
+
+# Deletes an artist
+delete('/artist/:id') do
+  Artist.get_artist_by_id(params[:id].to_i).delete
+  redirect to("/")
+end
+
+# Deletes a stage
+delete('/stage/:id') do
+  Stage.get_stage_with_id(params[:id].to_i).delete
+  redirect to("/")
+end

@@ -5,4 +5,8 @@
   <input id="stage_name" name="stage_name" type="text" value="<%= @stage.name %>">
   <button type="submit">Submit</button>
 </form>
+<form action="/stage/<%= @stage.id %>" method="post">
+  <input name="_method" type="hidden" value="delete">
+  <button type="submit">Delete Stage</button>
+</form>
 <a href='/'>Main Menu</a>
