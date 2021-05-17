@@ -15,7 +15,8 @@ end
 # Stage info page. Lists artists on stage. Has links to pages for editing the
 # stage, editing existing artists, and adding new artists
 get('/stage/:id') do
-  
+  @stage = Stage.get_stage_with_id(params[:id].to_i)
+  erb(:stage_info)
 end
 
 # Page with form for creating a new stage
