@@ -1,8 +1,10 @@
 require('rspec')
 require('stage')
+require('artist')
 
 describe '#Stage' do
   before(:each) do
+    Stage.clear
     @stage_1 = Stage.new("Great Deku Tree")
     @stage_2 = Stage.new("Creepy Cabin in the Woods")
   end
@@ -58,6 +60,18 @@ describe '#Stage' do
 
     it("returns 'no stage' if there isn't a stage with the specified id") do
       expect(Stage.get_stage_with_id(724)).to(eq('no stage'))
+    end
+  end
+
+  describe('#get_artists') do
+    before(:each) do
+      Artist.clear
+    end
+    it("returns a list with every artist that performs on this stage") do
+      artist1 = Artist.new("Artist 1", 0)
+      artist2 = Artist.new("Artist 2", 0)
+      artist3 = Artist.new("Aritst 3", 1)
+      expect(@stage_1.get_artists).to(eq([artist1, artist2]))
     end
   end
 

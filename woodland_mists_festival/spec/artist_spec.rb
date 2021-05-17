@@ -52,12 +52,21 @@ describe '#Artist' do
       @artist_1.delete
     end
 
-    it("deletes itself from all_stages") do
+    it("deletes itself from all_artists") do
       expect(Artist.all_artists.include?(@artist_1)).to(eq(false))
     end
-    it("doesn't delete other stages from all_stages") do
+    it("doesn't delete other artists from all_artists") do
       expect(Artist.all_artists.include?(@artist_2)).to(eq(true))
       expect(Artist.all_artists.include?(@artist_3)).to(eq(true))
+    end
+  end
+
+  describe('.get_artist_by_id') do
+    it("returns the artist that has the matching ID.") do
+      expect(Artist.get_artist_by_id(0)).to(eq(@artist_1))
+    end
+    it("returns 'no artist' if there isn't an artist with a matching ID") do
+      expect(Artist.get_artist_by_id(799)).to(eq('no artist'))
     end
   end
 end

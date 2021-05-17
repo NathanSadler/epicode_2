@@ -1,1 +1,14 @@
-<h1><%= @stage.name %></h1>
+<h1>Stage Info</h1>
+<p>Stage name: <%= @stage.name %>
+<p> Artists: </p>
+<ul>
+  <% if @stage.get_artists.length != 0 %>
+    <% @stage.get_artists.each do |artist| %>
+      <li><a href="/artist/<%= artist.id %>"><%= artist.name %></a></li>
+    <% end %>
+  <% else %>
+    <p>This stage has no artists</p>
+  <% end %>
+</ul>
+<a href='/stage/<%= @stage.id %>/edit'>Edit Stage</a>
+<a href='/'>Main Menu</a>

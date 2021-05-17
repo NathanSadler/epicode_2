@@ -56,4 +56,13 @@ class Artist
     @@all_artists.delete(@id)
   end
 
+  # Returns the artist with the matching id. If there isn't one, returns 'no artist'
+  def self.get_artist_by_id(id)
+    if(@@all_artists.keys.include?(id))
+      @@all_artists[id]
+    else
+      'no artist'
+    end
+  end
+
 end

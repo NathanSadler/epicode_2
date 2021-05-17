@@ -56,4 +56,9 @@ class Stage
     end
   end
 
+  # Returns a list of every artist that performs on this stage
+  def get_artists
+    Artist.all_artists.select {|artist| artist.stage_id == self.id}
+  end
+
 end

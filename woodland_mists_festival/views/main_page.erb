@@ -13,10 +13,11 @@
 <% end %>
 
 <h2>Artists</h2>
+<a href='/artist/create'>Add a new artist</a>
 <% if !@artist_list.empty? %>
   <ul>
-    <% @artist_list.each do |stage_name| %>
-      <li><%= @artist_list.name %></li>
+    <% @artist_list.each do |artist| %>
+      <a href="artist/<%= artist.id %>"><li><%= artist.name %></li></a>
     <% end %>
   </ul>
 <% else %>

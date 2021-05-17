@@ -1,0 +1,16 @@
+<h1>Create Artist</h1>
+<form action="/artist/create" method="post">
+  <label for="artist_name">Artist Name</label>
+  <input id="artist_name" name="artist_name">
+  <label for="stage_id">Stage</label>
+  <select name="stage_id" id="stage_id">
+    <% if @stage_list.length == 0 %>
+      <option value="-1">No Stage</option>
+    <% else %>
+      <% @stage_list.each do |stage| %>
+        <option value="<%= stage.id %>"><%= stage.name %></option>
+      <% end %>
+    <% end %>
+  </select>
+  <button type="submit">Submit</button>
+</form>
