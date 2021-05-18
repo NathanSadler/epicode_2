@@ -1,13 +1,16 @@
 class Room
   @@all_rooms = {}
   @@room_count = 0
+  @@start_room = nil
+  @@end_room = nil
 
-  attr_accessor :items, :paths
+  attr_accessor :items, :paths, :name, :id
 
-  def initialize(north=nil, south=nil, east=nil, west=nil, items={})
-    @paths = {:north => north, :south => south, :east => east, :west => west}
+  def initialize(items={}, name=nil)
+    @paths = {:north => nil, :south => nil, :east => nil, :west => nil}
     @id = @@room_count
     @items = items
+    @name = name || @id
     @@all_rooms[@id] = self
     @@room_count += 1
   end
@@ -32,6 +35,10 @@ class Room
     return @paths[direction]
   end
 
+  def self.get_room_by_id(id)
+    @@all_rooms[id]
+  end
+
 
   def self.all_rooms
     @@all_rooms.values
@@ -40,6 +47,22 @@ class Room
   def self.clear
     @@all_rooms = {}
     @@room_count = 0
+  end
+
+  def start_room
+    @@start_room
+  end
+
+  def end_room
+    @@end_room
+  end
+
+  def set_start_room
+    @@start_room == self
+  end
+
+  def set_end_room
+    @@end_room == self
   end
 
 end

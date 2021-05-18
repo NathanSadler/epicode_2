@@ -1,0 +1,13 @@
+<h1>Rooms</h1>
+<a href="/editor">Back</a>
+<a href="/editor/room/create">Add a room</a>
+<h2>All Rooms</h2>
+<% if @rooms.length == 0 %>
+  <p>No rooms have been created</p>
+<% else %>
+  <ul>
+    <% @rooms.each do |room| %>
+      <li><a href="/editor/room/<%= room.id %>"><%= room.name %></a></li>
+    <% end %>
+  </ul>
+<% end %>
