@@ -1,7 +1,8 @@
 class Obstacle
   @@obstacle_list = {}
+  @@obstacle_count = 0
 
-  attr_accessor = :pass_text
+  attr_accessor = :pass_text, :id
 
   # Path is the path the obstacle is in
   def initialize(name, block_text=nil, pass_text=nil, path=nil)
@@ -9,6 +10,8 @@ class Obstacle
     @block_text = block_text
     @pass_text = pass_text
     @path = path
+    @id = @@obstacle_count
+    @@obstacle_count += 1
     @@obstacle_list[name] = self
   end
 

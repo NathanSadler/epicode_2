@@ -8,8 +8,13 @@ class Path
   # Direction_a and direction_b indicate which walls of the rooms enter the
   # pathway. Obstacle is an... obstacle
   def initialize(room_a, direction_a, room_b, direction_b, obstacle=nil)
-    @room_a = room_a
-    @room_b = room_b
+    if (room_a.is_a?(Integer)) && (room_b.is_a?(Integer))
+      @room_a = Room.get_room_by_id(room_a)
+      @room_b = Room.get_room_by_id(room_b)
+    else
+      @room_a = room_a
+      @room_b = room_b
+    end
     @direction_a = direction_a
     @direction_b = direction_b
     @obstacle = obstacle
@@ -41,6 +46,12 @@ class Path
     end
   end
 
+  # Returns a string. It should be formatted like 'Path from <room a name> to
+  # <room b name>'
+  def name
+    "Path from #{@room_a.name} to #{@room_b.name}"
+  end
+
   # Tries to travel along the path. If successful, returns the room on the end
   # of the path that is NOT the room being travelled from. If the starting point
   # is not on the path, returns nil. If the starting point is valid but an
@@ -55,6 +66,10 @@ class Path
     else
       return @obstacle.block_text
     end
+  end
+
+  def self.all_paths
+    return @@all_paths.values
   end
 
 end

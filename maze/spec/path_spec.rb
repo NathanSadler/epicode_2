@@ -38,6 +38,12 @@ describe '#Path' do
     end
   end
 
+  describe('.all_paths') do
+    it('returns a list containing every path') do
+      expect(Path.all_paths).to(eq([@patha, @pathb]))
+    end
+  end
+
   describe('#travel_from') do
     it('returns the room that is NOT being travelled from') do
       expect(@patha.travel_from(@room0)).to(eq(@room1))
@@ -49,6 +55,12 @@ describe '#Path' do
     it('returns block text of obstacle if a valid starting point is '+
     'given, but the path cannot be travelled because of an obstacle') do
       expect(@pathb.travel_from(@room2)).to(eq("Block text"))
+    end
+  end
+
+  describe('#name') do
+    it('returns the name of the path') do
+      expect(@patha.name).to(eq("Path from Room \#0 to Room \#1"))
     end
   end
 

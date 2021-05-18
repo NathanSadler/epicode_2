@@ -1,0 +1,13 @@
+<h1>All Paths</h1>
+<a href="/editor">Back</a>
+<a href="/editor/path/create">Add a path</a>
+<h2>All paths</h2>
+<% if @paths.length == 0 %>
+  <p>No paths have been created</p>
+<% else %>
+  <ul>
+    <% @paths.each do |path| %>
+      <li><a href="/editor/path/<%= path.id %>"><%= path.name %></a></li>
+    <% end %>
+  </ul>
+<% end %>

@@ -1,0 +1,35 @@
+<h1>Create Path</h1>
+<!-- Add some stuff about error messages here later-->
+<form action="/editor/path/create" method="post">
+  <!-- Create drop-down lists for both rooms and directions-->
+  <% [["room_a", "First Room"], ["room_b", "Second Room"]].each do |end_room| %>
+  <!-- Adds the drop-down list to select a room -->
+    <label for="<%= end_room[0] %>"><%= end_room[1] %></label>
+    <select name="<%= end_room[0] %>" id="<%= end_room[0] %>">
+      <% @rooms.each do |room_choice| %>
+        <option value="<%= room_choice.id %>"><%= room_choice.name %></option>
+      <% end %>
+    </select>
+    <br>
+    <!-- Adds the drop-down list for selecting a direction -->
+    <label for="<%= end_room[0] %>_direction"><%= end_room[1] %> direction</label>
+    <select name="<%= end_room[0] %>_direction" id="<%= end_room[0] %>_direction">
+      <% ['north', 'south', 'east', 'west'].each do |direction| %>
+        <option value="<%= direction %>"><%= direction %></option>
+      <% end %>
+    </select>
+    <br>
+  <% end %>
+
+  <!-- Selecting an obstacle to use -->
+  <label for="obstacle">Obstacle</label>
+  <select name="obstacle" id="obstacle">
+    <option>None</option>
+    <% @obstacles.each do |obstacle| %>
+      <option value="<%= obstacle.id %>"><%= obstacle.name %></option>
+    <% end %>
+  </select>
+  <br>
+
+  <button type="submit">Submit</button>
+</form>

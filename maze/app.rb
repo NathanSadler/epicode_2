@@ -15,6 +15,34 @@ get('/editor') do
   erb :editor_menu
 end
 
+# All for handling paths
+get('/editor/path') do
+  @paths = Path.all_paths
+  @rooms = Room.all_rooms
+  erb(:paths_menu)
+end
+
+get('/editor/path/create') do
+  @rooms = Room.all_rooms
+  @obstacles = Obstacle.all_obstacles
+  erb(:create_path)
+end
+
+post('/editor/path/create') do
+  # Add stuff for handling situations when a user tries to add a path that would
+  # go somewhere where there is already a path if you have the time
+  print(params)
+  selected_obstacle = params[:obstacle]
+  if selected_obstacle == "None"
+    selected_obstacle = nil
+  end
+  Path.new(params[:room_a].to_i, params[:room_a_direction].to_sym,
+    params[:room_b].to_i, params[:room_b_direction].to_sym, selected_obstacle)
+  redirect to('/editor/path')
+end
+
+
+# All for handling Rooms
 get('/editor/room') do
   @rooms = Room.all_rooms
   erb(:rooms_menu)

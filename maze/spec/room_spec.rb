@@ -5,6 +5,9 @@ require('obstacle')
 
 describe '#Room' do
   before(:each) do
+    Room.clear
+    Obstacle.clear
+    Path.clear
     @room0 = Room.new
     @room1 = Room.new
     @room2 = Room.new
@@ -22,6 +25,16 @@ describe '#Room' do
     end
     it("returns nil if there is not a path in the specified direction") do
       expect(@room0.use_path(:east)).to(eq(nil))
+    end
+  end
+
+  describe('#name') do
+    it("returns the name of the room") do
+      temp_room = Room.new(items={}, name="Test Room")
+      expect(temp_room.name).to(eq("Test Room"))
+    end
+    it("returns 'Room\# id' if the room's name is the same as its ID") do
+      expect(@room0.name).to(eq('Room #0'))
     end
   end
 

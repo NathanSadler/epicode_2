@@ -4,7 +4,7 @@ class Room
   @@start_room = nil
   @@end_room = nil
 
-  attr_accessor :items, :paths, :name, :id
+  attr_accessor :items, :paths, :id
 
   def initialize(items={}, name=nil)
     @paths = {:north => nil, :south => nil, :east => nil, :west => nil}
@@ -49,11 +49,11 @@ class Room
     @@room_count = 0
   end
 
-  def start_room
+  def self.start_room
     @@start_room
   end
 
-  def end_room
+  def self.end_room
     @@end_room
   end
 
@@ -63,6 +63,16 @@ class Room
 
   def set_end_room
     @@end_room == self
+  end
+
+  # Returns the name of the room. If the name is the same as the id, returns
+  # "Room #<id>" instead
+  def name
+    if @name == @id
+      return "Room \##{@id}"
+    else
+      return @name
+    end
   end
 
 end
