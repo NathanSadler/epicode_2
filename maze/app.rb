@@ -15,6 +15,30 @@ get('/editor') do
   erb :editor_menu
 end
 
+# All for handling items
+get('/editor/item') do
+  @object_name = "item"
+  @object_name_plural = "items"
+  @objects = Item.all_items
+  erb(:menu_template)
+end
+
+get('/editor/item/create') do
+  "dummy for item creation form"
+end
+
+# All for handling obstacles
+get('/editor/obstacle') do
+  @object_name = "obstacle"
+  @object_name_plural = "obstacles"
+  @objects = Obstacle.all_obstacles
+  erb(:menu_template)
+end
+
+get('/editor/obstacle/create') do
+  "dummy for obstacle creation form"
+end
+
 # All for handling paths
 get('/editor/path') do
   @paths = Path.all_paths
@@ -73,4 +97,8 @@ end
 
 post('/editor/room/:id') do
   "Test edit form for #{Room.get_room_by_id(params[:id])}"
+end
+
+post('/please_work') do
+
 end
