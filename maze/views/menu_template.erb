@@ -1,12 +1,13 @@
-<h1>All <%= @object_name.capitalize %>s</h1>
+<h1><%= @object_name_plural.capitalize %></h1>
 <a href="/editor">Back</a>
 <a href="/editor/<%= @object_name %>/create">Add a <%= @object_name %></a>
+<h2>All <%= @object_name_plural.capitalize %></h2>
 <% if @objects.length == 0 %>
   <p>No <%= @object_name_plural %> have been created</p>
 <% else %>
   <ul>
     <% @objects.each do |object| %>
-      <li><a href="/editor/<%= object_name %>/<%= object.id %>"><%= object.name %></a></li>
+      <li><a href="/editor/<%= @object_name %>/<%= object.id %>"><%= object.name %></a></li>
     <% end %>
   </ul>
 <% end %>

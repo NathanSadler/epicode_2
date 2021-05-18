@@ -41,9 +41,10 @@ end
 
 # All for handling paths
 get('/editor/path') do
-  @paths = Path.all_paths
-  @rooms = Room.all_rooms
-  erb(:paths_menu)
+  @object_name = "path"
+  @object_name_plural = "paths"
+  @objects = Path.all_paths
+  erb(:menu_template)
 end
 
 get('/editor/path/create') do
@@ -68,8 +69,10 @@ end
 
 # All for handling Rooms
 get('/editor/room') do
-  @rooms = Room.all_rooms
-  erb(:rooms_menu)
+  @object_name = "room"
+  @object_name_plural = "rooms"
+  @objects = Room.all_rooms
+  erb(:menu_template)
 end
 
 get('/editor/room/create') do
