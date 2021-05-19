@@ -101,7 +101,3 @@ end
 post('/editor/room/:id') do
   "Test edit form for #{Room.get_room_by_id(params[:id])}"
 end
-
-post('/please_work') do
-
-end
