@@ -56,4 +56,8 @@ class Board
     final
   end
 
+  def delete
+    @@all.delete(@id)
+  end
+
 end

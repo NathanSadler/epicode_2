@@ -1,6 +1,9 @@
-<!-- Display name and content -->
+<!-- Display name, content, and timestamp -->
 <h1><%= @message.name %></h1>
 <h5><%= @message.timestamp %></h5>
 <p><%= @message.content %></p>
 
 <!-- Add edit option later -->
+<% if @is_admin %>
+  <a href="/board/<%= @message.board_id %>/messages/<%= @message.id %>/edit">Edit Message</a>
+<% end %>

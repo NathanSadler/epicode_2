@@ -46,11 +46,13 @@ end
 
 # Form for editing a board
 get('/board/:board_id/edit') do
+  board = Board.master_hash[params[:board_id].to_i]
   @options = {
     :action => '/board/:board_id/edit',
     :method => 'post',
     :secret_method => 'patch',
-    :default_name => Board.master_hash[params[:board_id].to_i].name
+    :default_name => board.name,
+    :board_id => board.id
   }
   erb(:board_form)
 end
@@ -62,6 +64,13 @@ patch('/board/:board_id/edit') do
   board_to_update.name = params[:board_name]
   board_to_update.save
   redirect to("/board/#{board_id}/messages")
+end
+
+# Deletes a board
+delete('/board/:board_id/delete') do
+  board_to_delete = Board.master_hash[params[:board_id].to_i]
+  board_to_delete.delete
+  redirect to("/")
 end
 
 # List a board's messages
@@ -100,6 +109,31 @@ end
 get("/board/:board_id/messages/:message_id") do
   @is_admin = session[:admin]
   @message = Message.get_message_by_id(params[:message_id].to_i)
-  erb(:message_details)
+  erb :message_details
+end
 
+# Form for editing a message
+get("/board/:board_id/messages/:message_id/edit") do
+  board_id = params[:board_id].to_i
+  message = Message.get_message_by_id(params[:message_id].to_i)
+  message_id = message.id
+  @options = {
+    :board_id => board_id,
+    :message_id => message_id,
+    :action => "/board/#{board_id}/messages/#{message_id}/edit",
+    :method => 'post',
+    :secret_method => 'patch',
+    :default_title => message.name,
+    :default_content => message.content
+  }
+  erb(:message_form)
+end
+
+# Actually updates a message
+patch("/board/:board_id/messages/:message_id/edit") do
+  message_to_update = Message.get_message_by_id(params[:message_id].to_i)
+  message_to_update.name = params[:message_title]
+  message_to_update.content = params[:message_content]
+  message_to_update.save
+  redirect to("/board/#{message_to_update.board_id}/messages")
 end

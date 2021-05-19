@@ -6,3 +6,11 @@
   <input id="board_name" name="board_name" type=text default="<%= @options[:default_name] %>">
   <button type="submit">Submit</button>
 </form>
+
+<!-- Add button for deleting if form is being used for editing -->
+<% if @options[:secret_method] == "patch" %>
+  <form action="/board/<%= @options[:board_id] %>/delete" method="post">
+    <input name="_method" type="hidden" value="delete">
+    <button type="submit">Delete Board</button>
+  </form>
+<% end %>
