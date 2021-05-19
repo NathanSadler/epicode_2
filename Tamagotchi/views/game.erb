@@ -1,0 +1,23 @@
+<h1><%= @tamagotchi.name %></h1>
+
+<!-- Option menu that appears when the tamagotchi isn't dead -->
+<% if @tamagotchi.is_alive? %>
+  <% [["happiness", "play", @tamagotchi.happiness],
+  ["food", "eat", @tamagotchi.food],
+  ["energy", "sleep", @tamagotchi.energy]].each do |i| %>
+    <form>
+      <!-- The label for the meter -->
+      <label for="<%= i[0] %>_meter"><%= i[0].capitalize %></label>
+      <!-- The meter -->
+      <progress id="<%= i[0] %>_meter" max="<%= i[2].max %>"
+        value="<%= i[2].level %>" style="background-color:red;"><%= i[2].level %></progress>
+      <!-- Link for performing an action -->
+      <a href="/game/<%= i[1] %>"><%= i[1].capitalize %></a>
+    </form>
+  <% end %>
+<!-- When the tamagotchi is dead, display a message informing the user and a
+link to create a new tamagotchi -->
+<% else %>
+  <p>Your Tamagotchi has died</p>
+  <a href="/create_tamagotchi">Create a new Tamagotchi</a>
+<% end %>
