@@ -79,7 +79,6 @@ get('/board/:board_id/messages') do
   @header = board.name
   @listable_name = "message"
   @listables = Message.get_messages_in_board(board.id)
-  print(@listables)
   @creation_url = Message.get_creation_url(board.id)
   @board_id = board.id
   erb(:list_menu)
