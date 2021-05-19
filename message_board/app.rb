@@ -11,13 +11,18 @@ get('/') do
   @listable_name = "board"
   @listables = Board.all
   @creation_url = Board.get_creation_url
-  #@is_admin = sessions[:admin]
+  @is_admin = session[:admin]
   erb(:list_menu)
 end
 
-# Enables admin mode
+# Enables or disables admin mode
 get('/admin') do
-  session[:admin] = true
+  if (session[:admin] == false || session[:admin].nil?)
+    session[:admin] = true
+  else
+    session[:admin] = false
+  end
+
   redirect to('/')
 end
 
@@ -39,6 +44,26 @@ post('/board/create') do
   redirect to('/')
 end
 
+# Form for editing a board
+get('/board/:board_id/edit') do
+  @options = {
+    :action => '/board/:board_id/edit',
+    :method => 'post',
+    :secret_method => 'patch',
+    :default_name => Board.master_hash[params[:board_id].to_i].name
+  }
+  erb(:board_form)
+end
+
+# Actually updates a board
+patch('/board/:board_id/edit') do
+  board_to_update = Board.master_hash[params[:board_id].to_i]
+  board_id = board_to_update.id
+  board_to_update.name = params[:board_name]
+  board_to_update.save
+  redirect to("/board/#{board_id}/messages")
+end
+
 # List a board's messages
 get('/board/:board_id/messages') do
   board = Board.master_hash[params[:board_id].to_i]
@@ -47,6 +72,7 @@ get('/board/:board_id/messages') do
   @listables = Message.get_messages_in_board(board.id)
   print(@listables)
   @creation_url = Message.get_creation_url(board.id)
+  @board_id = board.id
   erb(:list_menu)
 end
 
@@ -72,7 +98,7 @@ end
 
 # Displays a message
 get("/board/:board_id/messages/:message_id") do
-  #@is_admin = session[:admin]
+  @is_admin = session[:admin]
   @message = Message.get_message_by_id(params[:message_id].to_i)
   erb(:message_details)
 

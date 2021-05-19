@@ -1,6 +1,20 @@
 <h1><%= @header %></h1>
 <a href="<%= @creation_url %>">Create new <%= @listable_name %></a>
 
+<!-- Display link for logging in/out as admin -->
+<% if !session[:admin] %>
+  <a href="/admin">Login as admin</a>
+<% else %>
+  <a href="/admin">Logout</a>
+<% end %>
+
+<!-- If messages are being displayed and the user is  logged in as admin,
+let the user edit the board these messages are on -->
+<% if @listable_name == "message" && session[:admin] %>
+  <a href="/board/<%= @board_id %>/edit">Edit Board</a>
+<% end %>
+
+<!-- List whatever needs to be listed -->
 <ul>
 <% @listables.each do |item| %>
   <li><a href="<%= item.get_url %>"><%= item.name %></a></li>
