@@ -4,13 +4,21 @@ require('pry')
 require('./lib/message')
 require('./lib/board')
 also_reload('lib/**/*.rb')
+enable :sessions
 
 get('/') do
   @header = "Board Menu"
   @listable_name = "board"
   @listables = Board.all
   @creation_url = Board.get_creation_url
+  #@is_admin = sessions[:admin]
   erb(:list_menu)
+end
+
+# Enables admin mode
+get('/admin') do
+  session[:admin] = true
+  redirect to('/')
 end
 
 # Form for creating board
@@ -60,4 +68,12 @@ post("/board/:board_id/messages/create") do
   foo = Message.new(params[:message_title], params[:board_id].to_i, params[:message_content])
   foo.save
   redirect to("board/#{params[:board_id]}/messages")
+end
+
+# Displays a message
+get("/board/:board_id/messages/:message_id") do
+  #@is_admin = session[:admin]
+  @message = Message.get_message_by_id(params[:message_id].to_i)
+  erb(:message_details)
+
 end

@@ -63,4 +63,8 @@ class Message
     "/board/#{board_id}/messages/create"
   end
 
+  def self.get_message_by_id(id)
+    @@all[id]
+  end
+
 end
