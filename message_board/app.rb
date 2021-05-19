@@ -37,6 +37,7 @@ get('/board/:board_id/messages') do
   @header = board.name
   @listable_name = "message"
   @listables = Message.get_messages_in_board(board.id)
+  print(@listables)
   @creation_url = Message.get_creation_url(board.id)
   erb(:list_menu)
 end
@@ -52,4 +53,11 @@ get("/board/:board_id/messages/create") do
     :default_content => ""
   }
   erb(:message_form)
+end
+
+# Actually creates a message
+post("/board/:board_id/messages/create") do
+  foo = Message.new(params[:message_title], params[:board_id].to_i, params[:message_content])
+  foo.save
+  redirect to("board/#{params[:board_id]}/messages")
 end
