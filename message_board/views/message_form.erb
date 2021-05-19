@@ -1,0 +1,14 @@
+<form action="<%= @options[:action] %>" method="<%= @options[:method] %>">
+  <% if !@options[:secret_method].nil? %>
+    <input name="_method" type="hidden" value="<%= @options[:secret_method] %>">
+  <% end %>
+  <label for="message_title">Message Title</label>
+  <input name="message_title" id="message_title" type="text" default="<%= @options[:default_title] %>">
+  <br>
+  <label for="message_content">Message Content</label>
+  <textarea id="message_content" name="message_content" rows="4" cols="50">
+    <%= @options[:default_content] %>
+  </textarea>
+  <br>
+  <button type="submit">Submit</button>
+</form>

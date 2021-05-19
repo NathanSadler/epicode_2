@@ -1,0 +1,8 @@
+<form action="<%= @options[:action] %>" method="<%= @options[:method] %>">
+  <% if !@options[:secret_method].nil? %>
+    <input name="_method" type="hidden" value="<%= @options[:secret_method] %>">
+  <% end %>
+  <label for="board_name">Board Name</label>
+  <input id="board_name" name="board_name" type=text default="<%= @options[:default_name] %>">
+  <button type="submit">Submit</button>
+</form>

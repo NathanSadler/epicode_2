@@ -1,0 +1,8 @@
+<h1><%= @header %></h1>
+<a href="<%= @creation_url %>">Create new <%= @listable_name %></a>
+
+<ul>
+<% @listables.each do |item| %>
+  <li><a href="<%= item.get_url %>"><%= item.name %></a></li>
+<% end %>
+</ul>
