@@ -4,6 +4,8 @@ require('./lib/item')
 require('./lib/obstacle')
 require('./lib/path')
 require('./lib/room')
+require('./lib/player')
+require('./lib/setup_default_maze')
 require('pry')
 also_reload('lib/**/*.rb')
 
@@ -13,6 +15,34 @@ end
 
 get('/editor') do
   erb :editor_menu
+end
+
+# For handling the actual game
+# Game start menu
+get('/game/menu') do
+  erb :game_menu
+end
+
+# Sets up and starts game with default maze.
+get('/game/startup/default') do
+  setup_default_maze
+  redirect to('/game')
+end
+
+# Displays the room the player is in
+get('/game') do
+  @player = Player.current_player
+  @room = @player.current_room
+  erb(:game)
+end
+
+# Tries moving the player along a given path from a starting point
+get('/game/move/:starting_room_id/:path_id') do
+  starting_room = Room.get_room_by_id(params[:starting_room_id].to_i)
+  path = Path.get_path_by_id(params[:path_id].to_i)
+  next_room = path.travel_from(starting_room)
+  Player.current_player.move_to_room(next_room.id)
+  redirect to('/game')
 end
 
 # All for handling items
@@ -56,7 +86,6 @@ end
 post('/editor/path/create') do
   # Add stuff for handling situations when a user tries to add a path that would
   # go somewhere where there is already a path if you have the time
-  print(params)
   selected_obstacle = params[:obstacle]
   if selected_obstacle == "None"
     selected_obstacle = nil
@@ -98,6 +127,7 @@ post('/editor/room/create') do
   redirect to("/editor/room")
 end
 
+# Temporary view for editing a room
 post('/editor/room/:id') do
   "Test edit form for #{Room.get_room_by_id(params[:id])}"
 end

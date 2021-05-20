@@ -1,0 +1,7 @@
+<h1>Maze Game</h1>
+<!-- Displays a link for each direction with a path -->
+<% @room.paths.keys.each do |direction| %>
+  <% if @room.paths[direction] %>
+    <a href="/game/move/<%= @room.id %>/<%= @room.paths[direction].id %>">Go <%= direction %></a>
+  <% end %>
+<% end %>

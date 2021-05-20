@@ -18,6 +18,10 @@ class Item
     @@all_items.values
   end
 
+  def self.get_item_by_id(id)
+    return @@all_items[id]
+  end
+
   # Deletes itself from all_items
   def delete
     @@all_items.delete(@id)

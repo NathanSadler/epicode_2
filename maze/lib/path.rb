@@ -7,7 +7,7 @@ class Path
   # Creates a path. Room_a and room_b are the rooms the path connects.
   # Direction_a and direction_b indicate which walls of the rooms enter the
   # pathway. Obstacle is an... obstacle
-  def initialize(room_a, direction_a, room_b, direction_b, obstacle=nil)
+  def initialize(room_a, direction_a, room_b, direction_b=nil, obstacle=nil)
     if (room_a.is_a?(Integer)) && (room_b.is_a?(Integer))
       @room_a = Room.get_room_by_id(room_a)
       @room_b = Room.get_room_by_id(room_b)
@@ -16,7 +16,7 @@ class Path
       @room_b = room_b
     end
     @direction_a = direction_a
-    @direction_b = direction_b
+    @direction_b = direction_b || Path.get_opposite_direction(direction_a)
     @obstacle = obstacle
     @id = @@path_count
     @@all_paths[@id] = self
@@ -46,6 +46,10 @@ class Path
     end
   end
 
+  def self.get_path_by_id(id)
+    return @@all_paths[id]
+  end
+
   # Returns a string. It should be formatted like 'Path from <room a name> to
   # <room b name>'
   def name
@@ -70,6 +74,13 @@ class Path
 
   def self.all_paths
     return @@all_paths.values
+  end
+
+  # Returns the direction opposite of whatever was given
+  def self.get_opposite_direction(direction)
+    directions_a = {1 => :north, -1 => :south, 2 => :east, -2 => :west}
+    directions_b = {:north => 1, :south => -1, :east => 2, :west => -2}
+    directions_a[directions_b[direction] * -1]
   end
 
 end

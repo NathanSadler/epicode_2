@@ -18,6 +18,14 @@ describe '#Path' do
     @pathb = Path.new(@room0, :east, @room2, :west, @obstacle)
   end
 
+  describe('#initialize') do
+    it('sets direction b to be the opposite of direction_a if b is not' +
+      ' specified') do
+        testpath = Path.new(@room0, :north, @room1)
+        expect(testpath.direction_b).to(eq(:south))
+    end
+  end
+
   describe('#can_pass?') do
     it('is true if there is no obstacle in the path') do
       expect(@patha.can_pass?).to(eq(true))
@@ -61,6 +69,15 @@ describe '#Path' do
   describe('#name') do
     it('returns the name of the path') do
       expect(@patha.name).to(eq("Path from Room \#0 to Room \#1"))
+    end
+  end
+
+  describe('#get_opposite_direction') do
+    it("returns the direction opposite of the given one") do
+      (expect Path.get_opposite_direction(:north)).to(eq(:south))
+      (expect Path.get_opposite_direction(:south)).to(eq(:north))
+      (expect Path.get_opposite_direction(:east)).to(eq(:west))
+      (expect Path.get_opposite_direction(:west)).to(eq(:east))
     end
   end
 
