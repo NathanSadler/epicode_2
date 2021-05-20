@@ -63,11 +63,11 @@ class Room
   end
 
   def set_start_room
-    @@start_room == self
+    @@start_room = self
   end
 
   def set_end_room
-    @@end_room == self
+    @@end_room = self
   end
 
   # Returns the name of the room. If the name is the same as the id, returns

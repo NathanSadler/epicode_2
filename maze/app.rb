@@ -48,7 +48,11 @@ get('/game/move/:starting_room_id/:path_id') do
     redirect to("/game/obstacle_message/#{starting_room.id}/#{path.id}/false")
   end
   Player.current_player.move_to_room(next_room.id)
-  redirect to('/game')
+  if Player.current_player.current_room != Room.end_room
+    redirect to('/game')
+  else
+    erb(:win_screen)
+  end
 end
 
 # Displays a message about a given path's obstacle and then moves the player to

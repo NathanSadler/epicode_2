@@ -42,6 +42,9 @@ def setup_default_maze
   room_list[4].add_item(key)
   room_list[5].add_item(lever)
 
+  # Selects the "ending" room
+  room_list[6].set_end_room
+
   # Creates player
   Player.new
 

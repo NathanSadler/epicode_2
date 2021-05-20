@@ -4,7 +4,12 @@
     <p> There is a pathway heading <%= direction.to_s %>.
     <!-- If there is an obstacle, describe it -->
     <% if @room.paths[direction].obstacle %>
-      It is blocked by a <%= @room.paths[direction].obstacle.name %>.
+      <% obstacle = @room.paths[direction].obstacle %>
+      <% if !obstacle.can_pass?(Player.current_player.inventory) %>
+        It is blocked by a <%= @room.paths[direction].obstacle.name %>.
+      <% else %>
+        <%= obstacle.pass_text %>
+      <% end %>
     <% end %>
     </p>
   <% end %>
