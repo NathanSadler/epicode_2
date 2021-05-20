@@ -4,11 +4,28 @@
     <p> There is a pathway heading <%= direction.to_s %>.
     <!-- If there is an obstacle, describe it -->
     <% if @room.paths[direction].obstacle %>
-      It is blocked by a <%= room.paths[direction].obstacle.name %>
+      It is blocked by a <%= @room.paths[direction].obstacle.name %>.
     <% end %>
     </p>
   <% end %>
 <% end %>
+
+
+<!-- Displays the items in this room, if there are any -->
+<% if !@room.items.empty? %>
+  <% @room.items.values.each do |item| %>
+    <div>There is a <%= item.name %>
+    <!-- If the item is an InteractableItem, use its specifc usage text.
+  Otherwise, just have the link say 'Pick Up' -->
+    <% if item.is_a?(InteractableItem) %>
+      <% usage_text = item.interaction_text %>
+    <% else %>
+      <% usage_text = "Pick Up" %>
+    <% end %>
+    <a href="/game/item_handler/<%= item.id %>"><%= usage_text %></a></div>
+  <% end %>
+<% end %>
+
 
 <!-- Returns user to previous screen -->
 <a href="/game">Go back to previous screen</a>

@@ -1,0 +1,8 @@
+<!-- If the user can't pass, display the appropriate block message -->
+<% if @can_pass == "false" %>
+<p><%= @path.obstacle.block_text %></p>
+<% end %>
+
+<!-- Link for returning to the next(or previous) room -->
+<% Player.current_player.move_to_room(@room.id) %>
+<a href="/game">OK</a>

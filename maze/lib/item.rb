@@ -17,6 +17,10 @@ class Item
     @id
   end
 
+  def name
+    @name
+  end
+
   # Returns a list containing every Item object
   def self.all_items
     @@all_items.values
@@ -44,6 +48,10 @@ class InteractableItem < Item
     @linked_obstacles = linked_obstacles
     @@all_items[@id] = self
     @interaction_text = interaction_text
+  end
+
+  def interaction_text
+    @interaction_text
   end
 
   # Switches state of the linked obstacles

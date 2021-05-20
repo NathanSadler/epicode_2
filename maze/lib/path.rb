@@ -36,7 +36,7 @@ class Path
 
   # Returns true if the path has no obstacle or the obstacle can be cleared. It
   # also needs to have a room on both ends
-  def can_pass?(inventory=[])
+  def can_pass?(inventory=Player.current_player.inventory)
     if @room_a == nil || @room_b == nil
       return false
     elsif !@obstacle.nil? && !@obstacle.can_pass?(inventory)
@@ -59,13 +59,19 @@ class Path
   # Tries to travel along the path. If successful, returns the room on the end
   # of the path that is NOT the room being travelled from. If the starting point
   # is not on the path, returns nil. If the starting point is valid but an
-  # obstacle blocks the path, returns block_text
+  # obstacle blocks the path, returns block_text. Also, if there is an
+  # ItemObstacle that the player is able to clear, the obstacle gets set to
+  # nil
   def travel_from(starting_room)
     if (starting_room != @room_a) && (starting_room != @room_b)
       return nil
     end
     if self.can_pass?
       foo = [@room_a, @room_b].select {|room| room != starting_room}
+      if(!@obstacle.nil? && @obstacle.is_a?(ItemObstacle))
+        @obstacle = nil
+        @@all_paths[@id] = self
+      end
       return foo[0]
     else
       return @obstacle.block_text

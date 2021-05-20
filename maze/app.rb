@@ -45,22 +45,37 @@ get('/game/move/:starting_room_id/:path_id') do
   # message
   next_room = path.travel_from(starting_room)
   if next_room.is_a?(String)
-    redirect to("/game/block/#{starting_room.id}/#{path.id}")
+    redirect to("/game/obstacle_message/#{starting_room.id}/#{path.id}/false")
   end
   Player.current_player.move_to_room(next_room.id)
   redirect to('/game')
 end
 
-get('/game/block/:room_id/:path_id') do
-  @block_message = Path.get_path_by_id(params[:path_id].to_i).obstacle.block_text
-  @room = Room.get_room_by_id(params[:room_id].to_i)
-  "#{@block_message}"
+# Displays a message about a given path's obstacle and then moves the player to
+# the appropriate room
+get('/game/obstacle_message/:next_room_id/:path_id/:can_pass') do
+  @path = Path.get_path_by_id(params[:path_id].to_i)
+  @room = Room.get_room_by_id(params[:next_room_id].to_i)
+  @can_pass = params[:can_pass]
+  erb(:obstacle_message)
 end
 
 # Displays detailed information about the current room
 get('/game/look_around/:room_id') do
   @room = Room.get_room_by_id(params[:room_id].to_i)
   erb(:look_around)
+end
+
+# Either interacts with or takes an item
+get('/game/item_handler/:item_id') do
+  @item = Item.get_item_by_id(params[:item_id].to_i)
+  if(@item.is_a?(InteractableItem))
+    @item.change_obstacle_states
+  else
+    Player.current_player.add_to_inventory(@item)
+    Player.current_player.current_room.items.delete(@item.id)
+  end
+  redirect to('/game')
 end
 
 # All for handling item CRUD

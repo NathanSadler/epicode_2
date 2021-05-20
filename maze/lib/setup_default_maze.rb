@@ -15,7 +15,7 @@ def setup_default_maze
   Path.new(room_list[0], :east, room_list[2], :west)
   locked_door_path = Path.new(room_list[1], :north, room_list[5], :south)
   Path.new(room_list[2], :south, room_list[3], :north)
-  large_gap_path = Path.new(room_list[2], :west, room_list[6], :east)
+  large_gap_path = Path.new(room_list[2], :east, room_list[6], :west)
   Path.new(room_list[3], :south, room_list[4], :north)
 
   # Create collectible item(s)
@@ -37,6 +37,10 @@ def setup_default_maze
   # Applies obstacles to Paths
   locked_door_path.obstacle = locked_door
   large_gap_path.obstacle = large_gap
+
+  # Adds items to rooms
+  room_list[4].add_item(key)
+  room_list[5].add_item(lever)
 
   # Creates player
   Player.new
