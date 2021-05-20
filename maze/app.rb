@@ -40,12 +40,30 @@ end
 get('/game/move/:starting_room_id/:path_id') do
   starting_room = Room.get_room_by_id(params[:starting_room_id].to_i)
   path = Path.get_path_by_id(params[:path_id].to_i)
+
+  # If travel_from returns a block message, redirect to a page with the block
+  # message
   next_room = path.travel_from(starting_room)
+  if next_room.is_a?(String)
+    redirect to("/game/block/#{starting_room.id}/#{path.id}")
+  end
   Player.current_player.move_to_room(next_room.id)
   redirect to('/game')
 end
 
-# All for handling items
+get('/game/block/:room_id/:path_id') do
+  @block_message = Path.get_path_by_id(params[:path_id].to_i).obstacle.block_text
+  @room = Room.get_room_by_id(params[:room_id].to_i)
+  "#{@block_message}"
+end
+
+# Displays detailed information about the current room
+get('/game/look_around/:room_id') do
+  @room = Room.get_room_by_id(params[:room_id].to_i)
+  erb(:look_around)
+end
+
+# All for handling item CRUD
 get('/editor/item') do
   @object_name = "item"
   @object_name_plural = "items"
@@ -57,7 +75,7 @@ get('/editor/item/create') do
   "dummy for item creation form"
 end
 
-# All for handling obstacles
+# All for handling obstacle CRUD
 get('/editor/obstacle') do
   @object_name = "obstacle"
   @object_name_plural = "obstacles"
@@ -69,7 +87,7 @@ get('/editor/obstacle/create') do
   "dummy for obstacle creation form"
 end
 
-# All for handling paths
+# All for handling path CRUD
 get('/editor/path') do
   @object_name = "path"
   @object_name_plural = "paths"
@@ -96,7 +114,7 @@ post('/editor/path/create') do
 end
 
 
-# All for handling Rooms
+# All for handling room CRUD
 get('/editor/room') do
   @object_name = "room"
   @object_name_plural = "rooms"

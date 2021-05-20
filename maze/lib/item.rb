@@ -13,6 +13,10 @@ class Item
     (self.name == other_item.name) && (self.id == other_item.id)
   end
 
+  def id
+    @id
+  end
+
   # Returns a list containing every Item object
   def self.all_items
     @@all_items.values
@@ -35,10 +39,11 @@ end
 
 # An item that switches the state of one or more obstacles
 class InteractableItem < Item
-  def initialize(name, linked_obstacles)
+  def initialize(name, linked_obstacles, interaction_text = nil)
     super(name)
     @linked_obstacles = linked_obstacles
     @@all_items[@id] = self
+    @interaction_text = interaction_text
   end
 
   # Switches state of the linked obstacles

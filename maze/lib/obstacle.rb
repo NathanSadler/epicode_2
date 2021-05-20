@@ -2,8 +2,6 @@ class Obstacle
   @@obstacle_list = {}
   @@obstacle_count = 0
 
-  attr_accessor = :pass_text, :id
-
   # Path is the path the obstacle is in
   def initialize(name, block_text=nil, pass_text=nil, path=nil)
     @name = name
@@ -37,6 +35,14 @@ class Obstacle
     @block_text
   end
 
+  def pass_text
+    @pass_text
+  end
+
+  def id
+    @id
+  end
+
   def name
     @name
   end
@@ -47,8 +53,13 @@ class Obstacle
     blocked_doors = {}
   end
 
+  def self.get_obstacle_by_id(id)
+    @@obstacle_list[id]
+  end
+
   def self.clear
     @@obstacle_list = {}
+    @@obstacle_count = 0
   end
 end
 
@@ -83,7 +94,7 @@ class OtherObstacle < Obstacle
   end
 
   # Returns true if current_state is true
-  def can_pass?
+  def can_pass?(inventory=[])
     @current_state
   end
 end

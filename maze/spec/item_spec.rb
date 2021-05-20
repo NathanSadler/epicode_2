@@ -4,6 +4,8 @@ require('obstacle')
 
 describe '#Item' do
   before(:each) do
+    Item.clear
+    Obstacle.clear
     @item = Item.new("Basic Item")
     @item2 = Item.new("Complex Item")
     @item3 = Item.new("Very Complex Item")

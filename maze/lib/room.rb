@@ -25,6 +25,11 @@ class Room
     end
   end
 
+  # Adds an item to itself
+  def add_item(item)
+    @items[item.id] = item
+  end
+
   # Changes one of the room's paths
   def update_paths(direction, path)
     @paths[direction] = path

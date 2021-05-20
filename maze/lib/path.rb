@@ -36,10 +36,10 @@ class Path
 
   # Returns true if the path has no obstacle or the obstacle can be cleared. It
   # also needs to have a room on both ends
-  def can_pass?
+  def can_pass?(inventory=[])
     if @room_a == nil || @room_b == nil
       return false
-    elsif !@obstacle.nil? && !@obstacle.can_pass?
+    elsif !@obstacle.nil? && !@obstacle.can_pass?(inventory)
       return false
     else
       return true

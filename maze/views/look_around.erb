@@ -1,0 +1,14 @@
+<!-- Describes the pathways in this room -->
+<% @room.paths.keys.each do |direction| %>
+  <% if @room.paths[direction] %>
+    <p> There is a pathway heading <%= direction.to_s %>.
+    <!-- If there is an obstacle, describe it -->
+    <% if @room.paths[direction].obstacle %>
+      It is blocked by a <%= room.paths[direction].obstacle.name %>
+    <% end %>
+    </p>
+  <% end %>
+<% end %>
+
+<!-- Returns user to previous screen -->
+<a href="/game">Go back to previous screen</a>
