@@ -3,12 +3,13 @@ class HangmanWord
   attr_reader :word, :guessed_letters, :wrong_guesses
 
   @@current_word = nil
-  def initialize(word=nil)
+  def initialize()
     word_list = [:formulate, :tissue, :sentiment, :memory, :finger, :deck,
     :rise, :problem, :persist, :position]
-    @word = word.downcase || word_list[rand(0..(word_list.length - 1))].to_s
+    @word = word_list[rand(0..(word_list.length - 1))].to_s
     @guessed_letters = []
     @wrong_guesses = 0
+    @@current_word = self
   end
 
   # returns a version of the word where each letter has a space after it and
@@ -36,6 +37,11 @@ class HangmanWord
     end
     @guessed_letters.push(guessed_letter)
     @guessed_letters.uniq!
+    @@current_word = self
+  end
+
+  def self.current_word
+    return @@current_word
   end
 
 end

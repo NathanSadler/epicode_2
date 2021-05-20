@@ -1,0 +1,27 @@
+<h1>Hangman</h1>
+
+<!-- selects a version of the image to display -->
+<% right_view = ("wrong" + @word.wrong_guesses.to_s).to_sym %>
+
+<p><%= erb(right_view) %></p>
+<br>
+<br>
+<%= @word.displayable_word %>
+<br>
+<!-- Form for guessing a letter. If the game is over, a message that tells
+the player if the won/lost and a link for starting a new game appears instead-->
+<% if @word.wrong_guesses >= 4 %>
+  <p>You lose. The word was <%= @word.word %></p>
+  <a href="/">New Game</a>
+<% elsif !@word.displayable_word.include?("_") %>
+  <p>You win!</p>
+  <a href="/">New Game</a>
+<% else %>
+<form action="/game" method="post">
+  <label for="user_guess">Guess a letter</label>
+  <input type="text" name="user_guess" id="user_guess" maxlength="1">
+  <button type="submit">Guess</button>
+</form>
+<% end %>
+<h6>Guessed Letters</h6>
+<%= @word.guessed_letters.join(" ") %>
