@@ -24,6 +24,7 @@ class Board
     (self.id == other_board.id)
   end
 
+
   def self.all
     @@all.values
   end

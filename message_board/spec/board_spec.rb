@@ -21,6 +21,12 @@ describe '#Board' do
     end
   end
 
+  describe('#set_name') do
+    it('changes the name of the board') do
+      
+    end
+  end
+
   describe('.sort_by_name') do
     it('sorts a list of Boards by their names') do
       test_board_2 = Board.new("zzzzzz")

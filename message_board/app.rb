@@ -15,6 +15,18 @@ get('/') do
   erb(:list_menu)
 end
 
+get('/sort_and_filter') do
+  sort = params[:sort]
+  search_term = params[:search_term]
+  search_regex = Regexp.new(search_term)
+  @header = "Board Menu"
+  @listable_name = "board"
+  @creation_url = Board.get_creation_url
+  @listables = (Board.all.select {|board| !search_regex.match(board.name).nil?})
+  @is_admin = session[:admin]
+  erb(:list_menu)
+end
+
 # Enables or disables admin mode
 get('/admin') do
   if (session[:admin] == false || session[:admin].nil?)
@@ -48,7 +60,7 @@ end
 get('/board/:board_id/edit') do
   board = Board.master_hash[params[:board_id].to_i]
   @options = {
-    :action => '/board/:board_id/edit',
+    :action => "/board/#{board.id}/edit",
     :method => 'post',
     :secret_method => 'patch',
     :default_name => board.name,
