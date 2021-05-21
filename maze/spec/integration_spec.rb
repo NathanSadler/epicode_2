@@ -162,16 +162,14 @@ end
 
 describe('create a path', {:type => :feature}) do
   before(:all) do
-    Path.clear
-    Item.clear
-    Obstacle.clear
-  end
-  it('creates a path and goes to the paths menu') do
-    Room.new({}, "foo")
-    Room.new({}, "bar")
+    visit('/')
+    click_on('Play Maze')
+    click_on('Start game with default maze')
     visit('/')
     click_on('Maze Editor')
     click_on('Paths')
+  end
+  it('creates a path and goes to the paths menu') do
     click_on('Add a path')
 
     select 'foo', from: 'First Room'

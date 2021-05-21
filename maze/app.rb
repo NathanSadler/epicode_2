@@ -115,9 +115,12 @@ get('/editor/path') do
 end
 
 get('/editor/path/create') do
-  @rooms = Room.all_rooms
-  @obstacles = Obstacle.all_obstacles
-  erb(:create_path)
+  @options = {
+    :header_action => "Create",
+    :action => "/editor/path/create",
+    :room_id => nil
+  }
+  erb(:path_editor)
 end
 
 post('/editor/path/create') do

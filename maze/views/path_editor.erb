@@ -1,12 +1,17 @@
-<h1>Create Path</h1>
+<h1><%= @options[:header_action] %> Path</h1>
 <!-- Add some stuff about error messages here later-->
-<form action="/editor/path/create" method="post">
+<form action="<%= @options[:action] %>" method="post">
+  <!-- Add hidden input if form isn't being used for creation -->
+  <% if @options[:secret_method] %>
+    <input name="_method" type="hidden" value="patch">
+  <% end %>
+
   <!-- Create drop-down lists for both rooms and directions-->
   <% [["room_a", "First Room"], ["room_b", "Second Room"]].each do |end_room| %>
   <!-- Adds the drop-down list to select a room -->
     <label for="<%= end_room[0] %>"><%= end_room[1] %></label>
     <select name="<%= end_room[0] %>" id="<%= end_room[0] %>">
-      <% @rooms.each do |room_choice| %>
+      <% Room.all_rooms.each do |room_choice| %>
         <option value="<%= room_choice.id %>"><%= room_choice.name %></option>
       <% end %>
     </select>
@@ -25,7 +30,7 @@
   <label for="obstacle">Obstacle</label>
   <select name="obstacle" id="obstacle">
     <option>None</option>
-    <% @obstacles.each do |obstacle| %>
+    <% Obstacle.all_obstacles do |obstacle| %>
       <option value="<%= obstacle.id %>"><%= obstacle.name %></option>
     <% end %>
   </select>
@@ -33,3 +38,11 @@
 
   <button type="submit">Submit</button>
 </form>
+
+<!-- Add delete option if form is not being used for creation-->
+<% if @options[:secret_method] %>
+  <form action="/editor/path/delete/<%= @options[:room_id] %>" method="post">
+    <input name="_method" type="hidden" value="delete">
+    <button type="submit">Delete Room</button>
+  </form>
+<% end %>
