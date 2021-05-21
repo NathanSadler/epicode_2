@@ -1,4 +1,6 @@
 <h1>Details for <%= @room.name %> </h1>
+<!-- Link for editing the room -->
+<a href="/editor/room/update/<%= @room.id %>">Edit Room</a>
 
 <!-- Display the paths. Doesn't appear if there aren't any paths -->
 <% if (@room.paths.values.select {|value| !value.nil?}).length > 0 %>

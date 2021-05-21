@@ -104,6 +104,60 @@ describe('reading a room', {:type => :feature}) do
     click_on('Room #4')
     expect(page).to have_content("key")
   end
+  it("displays a message saying if it is the starting room, ending room, "+
+  "or neither") do
+    click_on('Room #4')
+    expect(page).to have_content("This room is not the starting or ending room.")
+    visit('/editor/room')
+    click_on('Room #0')
+    expect(page).to have_content("This room is the starting room")
+    visit('/editor/room')
+    click_on('Room #6')
+    expect(page).to have_content("This room is the ending room")
+  end
+end
+
+describe('updating a room', {:type => :feature}) do
+  before(:each) do
+    visit('/')
+    click_on('Play Maze')
+    click_on('Start game with default maze')
+    visit('/')
+    click_on('Maze Editor')
+    click_on('Rooms')
+  end
+  it('fills in/submits a form and changes the room') do
+    click_on('Room #4')
+    click_on('Edit Room')
+    fill_in 'room_name', with: 'Lucky Number 444'
+    choose('Starting Room')
+    check('lever')
+    uncheck('key')
+    click_on('Submit')
+    expect(page).to have_content('Lucky Number 444')
+    expect(page).to have_content('This room is the starting room')
+    expect(page).to have_content('lever')
+    expect(page).to have_no_content('key')
+  end
+end
+
+describe('deleting a room', {:type => :feature}) do
+  before(:each) do
+    visit('/')
+    click_on('Play Maze')
+    click_on('Start game with default maze')
+    visit('/')
+    click_on('Maze Editor')
+    click_on('Rooms')
+  end
+  it('deletes a room') do
+    click_on('Room #4')
+    click_on('Edit Room')
+    click_on('Delete Room')
+    expect(page).to have_content('All Rooms')
+    expect(page).to have_content('Room #1')
+    expect(page).to have_no_content('Room #4')
+  end
 end
 
 describe('create a path', {:type => :feature}) do

@@ -190,7 +190,48 @@ get('/editor/room/read/:id') do
   erb(:read_room)
 end
 
-# Temporary view for editing a room
-post('/editor/room/:id') do
-  "Test edit form for #{Room.get_room_by_id(params[:id])}"
+# View with form for editing a room
+get('/editor/room/update/:id') do
+  room_id = params[:id].to_i
+  @options = {
+    :header_action => "Edit",
+    :action => "/editor/room/update/#{room_id}",
+    :room_id => room_id,
+    :secret_method => "patch"
+  }
+  erb(:room_editor)
+end
+
+# Actually updates the room
+patch('/editor/room/update/:id') do
+  # Gets needed info
+  room_to_update = Room.get_room_by_id(params[:id].to_i)
+  room_name = params[:room_name]
+  room_type = params[:room_type]
+  item_keys = params.keys.select {|key| key.match?(/item_\d+\b/)}
+
+  # Changes room name
+  room_to_update.set_name(room_name)
+
+  # Sets room type (start, end, or neither)
+  if room_type == 'start'
+    room_to_update.set_start_room
+  end
+  if room_type == 'end'
+    room_to_update.set_end_room
+  end
+
+  # Updates items in room
+  room_to_update.clear_items
+  item_keys.each do |key|
+    room_to_update.add_item(Item.get_item_by_id(key.match('\d\b').to_s.to_i))
+  end
+  redirect to("/editor/room/read/#{room_to_update.id}")
+end
+
+# Deletes a room
+delete('/editor/room/delete/:id') do
+  room = Room.get_room_by_id(params[:id].to_i)
+  room.delete
+  redirect to('/editor/room')
 end

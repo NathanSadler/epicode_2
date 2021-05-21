@@ -31,9 +31,20 @@ class Room
     @@all_rooms[@id] = self
   end
 
+  # Updates itself in the mock db
+  def update
+    @@all_rooms[@id] = self
+  end
+
   # Changes one of the room's paths
   def update_paths(direction, path)
     @paths[direction] = path
+    @@all_rooms[@id] = self
+  end
+
+  # Changes the name of the room
+  def set_name(new_name)
+    @name = new_name
     @@all_rooms[@id] = self
   end
 
@@ -41,10 +52,20 @@ class Room
     return @paths[direction]
   end
 
+  # Removes all items from the room
+  def clear_items
+    @items = {}
+    @@all_rooms[@id] = self
+  end
+
   def self.get_room_by_id(id)
     @@all_rooms[id]
   end
 
+  # Removes itself from the database
+  def delete
+    @@all_rooms.delete(@id)
+  end
 
   def self.all_rooms
     @@all_rooms.values
