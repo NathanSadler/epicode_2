@@ -142,26 +142,52 @@ get('/editor/room') do
 end
 
 get('/editor/room/create') do
-  erb(:create_room)
+  @options = {
+    :header_action => "Create",
+    :action => "/editor/room/create",
+    :room_id => nil
+  }
+  erb(:room_editor)
 end
 
 post('/editor/room/create') do
   room_type = params[:room_type]
-  foo = Room.new(items={}, params[:room_name])
+  new_room = Room.new(items={}, params[:room_name])
   # Set start and end rooms if needed
   if room_type == 'start'
-    foo.set_start_room
+    new_room.set_start_room
   end
   if room_type == 'end'
-    foo.set_end_room
+    new_room.set_end_room
   end
   # Override user's selections for start and end rooms if they haven't been
   # specified yet
   if Room.all_rooms.length == 0
-    foo.set_start_room
-    foo.set_end_room
+    new_room.set_start_room
+    new_room.set_end_room
+  end
+
+  # Add selected items to the room
+  # use regex to get all
+  item_keys = params.keys.select {|key| key.match?(/item_\d+\b/)}
+  item_keys.each do |key|
+    new_room.add_item(Item.get_item_by_id(key.match('\d\b').to_s.to_i))
   end
   redirect to("/editor/room")
+end
+
+# Details informaton about this room
+get('/editor/room/read/:id') do
+  @room = Room.get_room_by_id(params[:id].to_i)
+  if (@room == Room.start_room)
+    @special_status = "This room is the starting room"
+  elsif (@room == Room.end_room)
+    @special_status = "This room is the ending room"
+  else
+    @special_status = "This room is not the starting or ending room."
+  end
+  @items = @room.items
+  erb(:read_room)
 end
 
 # Temporary view for editing a room

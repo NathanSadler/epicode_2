@@ -1,0 +1,27 @@
+<h1>Details for <%= @room.name %> </h1>
+
+<!-- Display the paths. Doesn't appear if there aren't any paths -->
+<% if (@room.paths.values.select {|value| !value.nil?}).length > 0 %>
+  <h2>Paths</h2>
+  <ul>
+  <% @room.paths.keys.each do |direction| %>
+    <% if !@room.paths[direction].nil? %>
+      <li><%= direction %>: <%= @room.paths[direction].name %></li>
+    <% end %>
+  <% end %>
+  </ul>
+<% end %>
+
+  <!-- Display message saying that is room is the starting room, ending room,
+  or neither -->
+  <h2><%= @special_status %></h2>
+
+  <!-- Diplays list of items in this room. Doesn't appear if there aren't any -->
+  <% if !@items.empty? %>
+    <h2>Items in this room</h2>
+    <ul>
+    <% @items.values.each do |item| %>
+      <li><%= item.name %></li>
+    <% end %>
+    </ul>
+  <% end %>

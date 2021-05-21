@@ -1,0 +1,37 @@
+<!-- Form for creating/editing a room -->
+<h1><%= @options[:header_action] %> Room</h1>
+<form action="<%= @options[:action] %>" method="post">
+  <!-- Add hidden input if form isn't being used for creation -->
+  <% if @options[:secret_method] %>
+    <input name="_method" type="hidden" value="patch">
+  <% end %>
+
+  <!-- Text field for room's name -->
+  <label for="room_name">Room Name</label>
+  <input id="room_name" name="room_name" type="text">
+  <% [['Starting Room', 'start'], ['Ending Room', 'end'], ['Neither', 'neither']].each do |room_type| %>
+  <br>
+  <!-- Radio buttons for choosing if this room is a starting room, ending room,
+  or neither -->
+  <input type="radio" id="<%= room_type[1] %>" name="room_type" value="<%= room_type[1] %>">
+  <label for="<%= room_type[1] %>"><%= room_type[0] %></label>
+  <% end %>
+
+  <!-- options for adding an item -->
+  <% if !Item.all_items.empty? %>
+    <p>Items</p>
+    <% Item.all_items.each do |item| %>
+      <label for="item_<%= item.id %>"><%= item.name %></label>
+      <input type="checkbox" id="item_<%= item.id %>" name="item_<%= item.id %>">
+      <br>
+    <% end %>
+  <% end %>
+
+  <br>
+  <button type="submit">Submit</button>
+</form>
+
+<!-- Add delete option if form is not being used for creation-->
+<% if @options[:secret_method] %>
+  <form action="/editor/room/delete/<%= @options[:room_id] %>">
+<% end %>

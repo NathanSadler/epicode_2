@@ -28,6 +28,7 @@ class Room
   # Adds an item to itself
   def add_item(item)
     @items[item.id] = item
+    @@all_rooms[@id] = self
   end
 
   # Changes one of the room's paths

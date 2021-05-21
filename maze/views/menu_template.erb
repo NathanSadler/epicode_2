@@ -7,7 +7,7 @@
 <% else %>
   <ul>
     <% @objects.each do |object| %>
-      <li><a href="/editor/<%= @object_name %>/<%= object.id %>"><%= object.name %></a></li>
+      <li><a href="/editor/<%= @object_name %>/read/<%= object.id %>"><%= object.name %></a></li>
     <% end %>
   </ul>
 <% end %>

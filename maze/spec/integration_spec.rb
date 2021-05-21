@@ -64,9 +64,13 @@ describe('looking around', {:type => :feature}) do
   end
 end
 
+describe('creating a room', {:type => :feature}) do
+  before(:each) do
+    visit('/')
+    click_on('Maze Editor')
+    click_on('Rooms')
+  end
 
-
-describe('create a room', {:type => :feature}) do
   it('creates a room and goes to the rooms menu') do
     visit('/')
     click_on('Maze Editor')
@@ -79,6 +83,29 @@ describe('create a room', {:type => :feature}) do
   end
 end
 
+describe('reading a room', {:type => :feature}) do
+  before(:each) do
+    visit('/')
+    click_on('Play Maze')
+    click_on('Start game with default maze')
+    visit('/')
+    click_on('Maze Editor')
+    click_on('Rooms')
+  end
+  it("lists a room's paths") do
+    click_on('Room #1')
+    expect(page).to have_content("north: Path from Room #1 to Room #5")
+  end
+  it("doesn't list paths that aren't there") do
+    click_on('Room #1')
+    expect(page).to have_no_content("west")
+  end
+  it("provides a list of items in the room") do
+    click_on('Room #4')
+    expect(page).to have_content("key")
+  end
+end
+
 describe('create a path', {:type => :feature}) do
   before(:all) do
     Path.clear
@@ -86,8 +113,9 @@ describe('create a path', {:type => :feature}) do
     Obstacle.clear
   end
   it('creates a path and goes to the paths menu') do
-    visit('/')
+    Room.new({}, "foo")
     Room.new({}, "bar")
+    visit('/')
     click_on('Maze Editor')
     click_on('Paths')
     click_on('Add a path')
