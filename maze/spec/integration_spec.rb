@@ -171,12 +171,17 @@ describe('create a path', {:type => :feature}) do
   end
   it('creates a path and goes to the paths menu') do
     click_on('Add a path')
-
-    select 'foo', from: 'First Room'
-    select 'north', from: 'First Room direction'
-    select 'bar', from: 'Second Room'
-    select 'south', from: 'Second Room direction'
+    select 'Room #0', from: 'First Room'
+    select 'south', from: 'First Room direction'
+    select 'Room #3', from: 'Second Room'
+    select 'west', from: 'Second Room direction'
     click_on('Submit')
-    expect(page).to have_content("Path from foo to bar")
+    expect(page).to have_content("Path from Room #0 to Room #3")
+  end
+  it("updates the paths on the rooms' detail pages") do
+    visit('/editor/room/read/3')
+    expect(page).to have_content("west: Path from Room #0 to Room #3")
+    visit('/editor/room/read/0')
+    expect(page).to have_content("south: Path from Room \#0 to Room \#3")
   end
 end
