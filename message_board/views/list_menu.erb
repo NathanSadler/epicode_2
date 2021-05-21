@@ -15,15 +15,28 @@ let the user edit the board these messages are on -->
 <% end %>
 
 <!-- Form for searching/filtering listables -->
+<h3>Search and sort</h3>
 <form action="/sort_and_filter" method="get">
   <label for="search_term">Title</label>
   <input type="text" id="search_term" name="search_term">
+  <label for="sort">Sort By</label>
+  <select name="sort" id="sort">
+    <option value="name">Name (ascending)</option>
+    <option value="name_reverse">Name (descending)</option>
+    <option value="create_date">Create Date (ascending)</option>
+    <option value="create_date_reverse">Create Date (descending)</option>
+  </select>
   <button type="submit">Submit</button>
 </form>
+<br>
 
 <!-- List whatever needs to be listed -->
-<ul>
+<h3><%= @listable_name.capitalize %>s</h3>
+<table>
 <% @listables.each do |item| %>
-  <li><a href="<%= item.get_url %>"><%= item.name %></a></li>
+<tr>
+  <td><a href="<%= item.get_url %>"><%= item.name %></a></td>
+  <td><%= item.timestamp.strftime("Created on %m/%d/%Y at %I:%M%p") %>
+</tr>
 <% end %>
-</ul>
+</table>

@@ -15,6 +15,7 @@ get('/') do
   erb(:list_menu)
 end
 
+# Sorts results by name or timestamp and filters them
 get('/sort_and_filter') do
   sort = params[:sort]
   search_term = params[:search_term]
@@ -22,8 +23,19 @@ get('/sort_and_filter') do
   @header = "Board Menu"
   @listable_name = "board"
   @creation_url = Board.get_creation_url
-  @listables = (Board.all.select {|board| !search_regex.match(board.name).nil?})
   @is_admin = session[:admin]
+
+  # Sorts results
+  if(sort.match?(/name/))
+    listables = Board.sort_by_name
+  else
+    listables = Board.sort_by_timestamp
+  end
+  if(sort.match?(/_reverse/))
+    listables = listables.reverse
+  end
+  #Filters results
+  @listables = (listables.select {|board| !search_regex.match(board.name).nil?})
   erb(:list_menu)
 end
 
@@ -34,7 +46,6 @@ get('/admin') do
   else
     session[:admin] = false
   end
-
   redirect to('/')
 end
 
