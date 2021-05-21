@@ -16,7 +16,12 @@ let the user edit the board these messages are on -->
 
 <!-- Form for searching/filtering listables -->
 <h3>Search and sort</h3>
-<form action="/sort_and_filter" method="get">
+<% if @listable_name == "message"%>
+  <% action_str = "/board/#{@board_id}/messages/sort_and_filter"%>
+<% else %>
+  <% action_str = "/sort_and_filter" %>
+<% end %>
+<form action="<%= action_str %>"method="get">
   <label for="search_term">Title</label>
   <input type="text" id="search_term" name="search_term">
   <label for="sort">Sort By</label>

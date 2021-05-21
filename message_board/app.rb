@@ -11,11 +11,12 @@ get('/') do
   @listable_name = "board"
   @listables = Board.all
   @creation_url = Board.get_creation_url
+  @action = '/sort_and_filter'
   @is_admin = session[:admin]
   erb(:list_menu)
 end
 
-# Sorts results by name or timestamp and filters them
+# Sorts board results by name or timestamp and filters them
 get('/sort_and_filter') do
   sort = params[:sort]
   search_term = params[:search_term]
@@ -24,6 +25,7 @@ get('/sort_and_filter') do
   @listable_name = "board"
   @creation_url = Board.get_creation_url
   @is_admin = session[:admin]
+  @action = '/sort_and_filter'
 
   # Sorts results
   if(sort.match?(/name/))
@@ -104,6 +106,33 @@ get('/board/:board_id/messages') do
   @listables = Message.get_messages_in_board(board.id)
   @creation_url = Message.get_creation_url(board.id)
   @board_id = board.id
+  #@action = "board/#{@board_id}/messages/sort_and_filter"
+  erb(:list_menu)
+end
+
+# Filters and sorts messages
+get('/board/:board_id/messages/sort_and_filter') do
+  board  = Board.master_hash[params[:board_id].to_i]
+  sort = params[:sort]
+  search_term = params[:search_term]
+  search_regex = Regexp.new(search_term)
+  @header = board.name
+  @listable_name = "message"
+  @creation_url = Message.get_creation_url(board.id)
+  @is_admin = session[:admin]
+  @board_id = board.id
+
+  # Sorts results
+  if(sort.match?(/name/))
+    listables = Message.get_messages_in_board(board.id)
+  else
+    listables = Message.get_messages_in_board(board.id)
+  end
+  if(sort.match?(/_reverse/))
+    listables = listables.reverse
+  end
+  #Filters results
+  @listables = (listables.select {|board| !search_regex.match(board.name).nil?})
   erb(:list_menu)
 end
 
