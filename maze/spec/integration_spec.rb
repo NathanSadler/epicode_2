@@ -228,3 +228,21 @@ describe('delete a path', {:type => :feature}) do
     expect(page).to have_no_content('Path from Room #0 to Room #1')
   end
 end
+
+describe('Item CRUD', {:type => :feature}) do
+  before(:all) do
+    visit('/')
+    click_on('Play Maze')
+    click_on('Start game with default maze')
+    visit('/')
+    click_on('Maze Editor')
+    click_on('Items')
+  end
+  it('creates a collectible item') do
+    click_on('Add a item')
+    click_on('Collectible Item')
+    fill_in('item_name', :with => "Skeleton Key")
+    click_on('Submit')
+    # add check for item existence later 
+  end
+end

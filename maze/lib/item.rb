@@ -59,6 +59,14 @@ class InteractableItem < Item
     @interaction_text
   end
 
+  def linked_obstacles
+    @linked_obstacles
+  end
+
+  def set_linked_obstacles(linked_obstacles)
+    @linked_obstacles = linked_obstacles
+  end
+
   # Switches state of the linked obstacles
   def change_obstacle_states
     @linked_obstacles.each do |i|

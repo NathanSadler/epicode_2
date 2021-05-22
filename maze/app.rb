@@ -160,11 +160,40 @@ end
 
 
 get('/editor/item/read/:id') do
-  "Test reader for #{Item.get_item_by_id(params[:id].to_i)}"
+  #binding.pry
+  item = Item.get_item_by_id(params[:id].to_i)
+  @back_link = "/editor/item"
+  @attributes = {}
+  if (item.is_a?(InteractableItem))
+    @edit_link = "/editor/item/update/#{item.id}/interactable"
+    linked_obstacles = item.linked_obstacles.map {|foo| foo.name}
+    linked_obstacles_str = linked_obstacles.join(", ")
+  else
+    @edit_link = "/editor/item/update/#{item.id}/collectible"
+    linked_obstacles = Obstacle.all_obstacles.select {|foo| foo.is_a?(ItemObstacle)}
+    linked_obstacles = linked_obstacles.select {|foo| foo.can_pass?([item])}
+    linked_obstacles = linked_obstacles.map {|foo| foo.name}
+    linked_obstacles_str = linked_obstacles.join(", ")
+  end
+
+  if linked_obstacles.length > 1
+    @attributes["Linked Obstacles"] = linked_obstacles_str
+  elsif linked_obstacles.length == 1
+    @attributes["Linked Obstacle"] = linked_obstacles[0]
+  else
+    @attributes["Linked Obstacles"] = "None"
+  end
+  erb(:reader)
 end
 
-get('/editor/item/update/:id') do
+# Edit form for collectible items
+get('/editor/item/update/:id/collectible') do
   "foobar"
+end
+
+# Edit form for interactable Items
+get ('/editor/item/update/:id/interactable') do
+
 end
 
 patch('/editor/item/update/:id') do
