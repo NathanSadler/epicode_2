@@ -285,7 +285,11 @@ get('/editor/obstacle/create/item') do
     :action => "/editor/obstacle/create"
   }
 
-  collectible_items =
+  collectible_items = Item.all_collectible_items
+  collectible_selections = []
+  collectible_items.each do |item|
+    collectible_selections.push([item.id, item.name])
+  end
 
   @fields = {
     :item_name => {
@@ -302,6 +306,12 @@ get('/editor/obstacle/create/item') do
       :field_type => "text",
       :name_and_id => "pass_text",
       :label_text => "Pass Text"
+    },
+    :required_item => {
+      :field_type => "dropdown",
+      :name_and_id => "required_item",
+      :label_text => "Item required to pass: ",
+      :options => collectible_selections
     }
   }
   erb(:generic_editor)
