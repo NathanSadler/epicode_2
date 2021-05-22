@@ -109,10 +109,11 @@ get('/editor/item/create/collectible') do
   }
 
   @fields = {
-    :item_name => ["text", {
+    :item_name => {
+      :field_type => "text",
       :name_and_id => "item_name",
       :label_text => "Item Name"
-      }]
+      }
   }
   erb(:generic_editor)
 end
@@ -141,11 +142,25 @@ get('/editor/item/create/interactable') do
 end
 
 post('/editor/item/create') do
-
+  # Determines if this should be an interactable item or a normal one, then saves
+  # it appropriately
+  if (params.keys.select {|foo| foo.match?(/obstacle_\d+\b/)}).length > 0
+    linked_obstacles = []
+    params.keys.each do |key|
+      if key.match?(/obstacle_\d+\b/)
+        linked_obstacles.push(Obstacle.get_obstacle_by_id(key.match('\d\b').to_s.to_i))
+      end
+    end
+    new_item = InteractableItem.new(params[:item_name], linked_obstacles)
+  else
+    new_item = Item.new(params[:item_name])
+  end
+  redirect to("/editor/item/read/#{new_item.id}")
 end
 
+
 get('/editor/item/read/:id') do
-  "foobar"
+  "Test reader for #{Item.get_item_by_id(params[:id].to_i)}"
 end
 
 get('/editor/item/update/:id') do
