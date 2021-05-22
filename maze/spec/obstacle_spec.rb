@@ -12,7 +12,15 @@ end
 
 describe '#ItemObstacle' do
   before(:each) do
+    Obstacle.clear
     @item_obstacle = ItemObstacle.new(:test_obstacle, :key)
+  end
+
+  describe('.all_obstacles') do
+    it("returns a list of every ItemObstacle object") do
+      other_obstacle = OtherObstacle.new("retracting staircase")
+      expect(ItemObstacle.all_obstacles).to(eq([@item_obstacle]))
+    end
   end
 
   describe('#can_pass?') do
@@ -40,6 +48,15 @@ describe '#OtherObstacle' do
       expect(OtherObstacle.get_obstacle_by_name(@other_obstacle.name).can_pass?).to(eq(true))
     end
   end
+
+  describe('.all_obstacles') do
+    it("Returns a list of all OtherObstacle objects") do
+      test_obstacle = ItemObstacle.new(:test_obstacle, :key)
+      expect(OtherObstacle.all_obstacles).to(eq([@other_obstacle,
+        @other_obstacle2]))
+    end
+  end
+
   describe('#can_pass?') do
     it("returns the current state of the obstacle") do
       expect(@other_obstacle.can_pass?).to(eq(false))

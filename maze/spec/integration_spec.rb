@@ -243,6 +243,23 @@ describe('Item CRUD', {:type => :feature}) do
     click_on('Collectible Item')
     fill_in('item_name', :with => "Skeleton Key")
     click_on('Submit')
-    # add check for item existence later 
+    expect(page).to have_content("Skeleton Key")
+    # make sure it goes to the read page
+    expect(page).to have_content("Back")
+    expect(page).to have_content("Edit")
+  end
+  it('creates an interactable item') do
+    visit('/editor/item/create')
+    click_on('Interactable Item')
+    fill_in('item_name', :with => "Skeleton Lever")
+    check('large gap')
+    # Make sure obstacles that shouldn't be there aren't there
+    expect(page).to have_no_content("locked door")
+
+    click_on("Submit")
+
+    # Make sure selected obstacle displays appropriately
+    expect(page).to have_content("large gap")
+
   end
 end

@@ -135,7 +135,7 @@ get('/editor/item/create/interactable') do
       :field_type => "checkboxes",
       :section_header => "Linked Obstacles",
       :name_id_prefix => "obstacle",
-      :checkable_options => Obstacle.all_obstacles
+      :checkable_options => OtherObstacle.all_obstacles
       }
   }
   erb(:generic_editor)
@@ -162,6 +162,7 @@ end
 get('/editor/item/read/:id') do
   #binding.pry
   item = Item.get_item_by_id(params[:id].to_i)
+  @name = item.name
   @back_link = "/editor/item"
   @attributes = {}
   if (item.is_a?(InteractableItem))
@@ -188,7 +189,17 @@ end
 
 # Edit form for collectible items
 get('/editor/item/update/:id/collectible') do
-  "foobar"
+  @options = {
+    :header_action => 'Edit',
+    :action => "/editor/item/update/#{params[:id].to_i}",
+    :object_name => 'item',
+    :secret_method => 'patch'
+  }
+
+  @fields = {
+
+  }
+  erb(:generic_editor)
 end
 
 # Edit form for interactable Items

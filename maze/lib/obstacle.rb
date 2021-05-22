@@ -72,6 +72,11 @@ class ItemObstacle < Obstacle
     @@obstacle_list[name] = self
   end
 
+  def self.all_obstacles
+    complete_list = Obstacle.all_obstacles
+    complete_list.select {|ob| ob.is_a?(ItemObstacle)}
+  end
+
   # Only returns true if the required item is in inventory
   def can_pass?(inventory)
     inventory.include?(@required_item)
@@ -84,6 +89,12 @@ class OtherObstacle < Obstacle
     super(name, block_text, pass_text)
     @current_state = current_state
     @@obstacle_list[name] = self
+  end
+
+  # Returns a list of every OtherObstacle object
+  def self.all_obstacles
+    complete_list = Obstacle.all_obstacles
+    complete_list.select {|foo| foo.is_a?(OtherObstacle)}
   end
 
   # Switches the current_state. Returns new state
