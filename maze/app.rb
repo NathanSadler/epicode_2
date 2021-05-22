@@ -317,6 +317,38 @@ get('/editor/obstacle/create/item') do
   erb(:generic_editor)
 end
 
+get('/editor/obstacle/create/environmental') do
+  @options = {
+    :header_action => "Create",
+    :object_name => "obstacle",
+    :action => "/editor/obstacle/create"
+  }
+
+  @fields = {
+    :item_name => {
+      :field_type => "text",
+      :name_and_id => "obstacle_name",
+      :label_text => "Obstacle Name"
+    },
+    :block_text => {
+      :field_type => "text",
+      :name_and_id => "block_text",
+      :label_text => "Block Text"
+    },
+    :pass_text => {
+      :field_type => "text",
+      :name_and_id => "pass_text",
+      :label_text => "Pass Text"
+    },
+    :clearable_by_default => {
+      :field_type => "dropdown",
+      :name_and_id => "clearable_by_default",
+      :label_text => "Clearable by default?",
+      :options => [["false", "No"], ["true", "Yes"]]
+    }
+  }
+  erb(:generic_editor)
+end
 
 # All for handling path CRUD
 get('/editor/path') do
