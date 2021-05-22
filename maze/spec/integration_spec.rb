@@ -270,4 +270,11 @@ describe('Item CRUD', {:type => :feature}) do
     click_on('Submit')
     expect(page).to have_content("Rod of activation")
   end
+  it('deletes items') do
+    visit('/editor/item')
+    click_on("Rod of activation")
+    click_on("Edit")
+    click_on("Delete")
+    expect(page).to have_no_content("Rod of activation")
+  end
 end

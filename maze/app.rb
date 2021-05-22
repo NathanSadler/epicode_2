@@ -254,6 +254,13 @@ patch('/editor/item/update/:id') do
   redirect to('/editor/item')
 end
 
+# Deletes an item
+delete('/editor/item/delete/:id') do
+  item = Item.get_item_by_id(params[:id].to_i)
+  item.delete
+  redirect to('/editor/item')
+end
+
 # All for handling obstacle CRUD
 get('/editor/obstacle') do
   @object_name = "obstacle"

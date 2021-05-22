@@ -36,3 +36,10 @@
   <br>
   <button type="submit">Submit</button>
 </form>
+
+<% if @options[:secret_method] %>
+  <form action="/editor/<%= @object_name %>/delete" method="post">
+    <input name="_method" type="hidden" value="delete">
+    <button type="submit">Delete</button>
+  </form>
+<% end %>
