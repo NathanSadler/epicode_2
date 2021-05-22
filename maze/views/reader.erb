@@ -1,0 +1,6 @@
+<h1><%= @name %></h1>
+<a href="<%= @back_link %>">Back</a>
+<a href="<%= @edit_link %>">Edit</a>
+<% @attributes.keys.each do |attribute| %>
+  <br><%= attribute %>: <%= @attributes[attribute] %>
+<% end %>

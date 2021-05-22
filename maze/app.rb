@@ -135,6 +135,27 @@ post('/editor/path/create') do
   redirect to('/editor/path')
 end
 
+get('/editor/path/read/:id') do
+  path = Path.get_path_by_id(params[:id].to_i)
+
+  @attributes = {
+    #{}"First Room" => path.room_a,
+    #{}"Second Room" => path.room_b,
+    #{}"First Room Direction" => path.direction_a,
+    #{}"Second Room Direction" => path.direction_b,
+    #{}"Obstacle" => path.obstacle.name
+  }
+  @attributes.store("First Room", path.room_a.name) if path.room_a
+  @attributes.store("Second Room", path.room_b.name) if path.room_b
+  @attributes.store("First Room Direction", path.direction_a) if path.direction_a
+  @attributes.store("Second Room Direction", path.direction_b) if path.direction_b
+  @attributes.store("Obstacle", path.obstacle.name) if path.obstacle
+  @name = path.name
+  @back_link = '/editor/path'
+  @edit_link = "/editor/path/update/#{path.id}"
+  erb(:reader)
+end
+
 
 # All for handling room CRUD
 get('/editor/room') do
