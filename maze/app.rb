@@ -188,6 +188,12 @@ patch('/editor/path/update/:id') do
   redirect to("/editor/path/read/#{path_to_update.id}")
 end
 
+# Deletes a path
+delete('/editor/path/delete/:id') do
+  Path.get_path_by_id(params[:id].to_i).delete
+  redirect to('/editor/path')
+end
+
 # All for handling room CRUD
 get('/editor/room') do
   @object_name = "room"

@@ -203,5 +203,28 @@ describe('update a path', {:type => :feature}) do
     select 'Room #1', from: 'Second Room'
     select 'east', from: 'Second Room direction'
     click_on('Submit')
+    expect(page).to have_content('First Room Direction: west')
+    expect(page).to have_content('Second Room Direction: east')
+  end
+  it('updates the paths for the rooms') do
+    visit('/editor/room/read/0')
+    expect(page).to have_content('west: Path from Room #0 to Room #1')
+  end
+end
+
+describe('delete a path', {:type => :feature}) do
+  before(:all) do
+    visit('/')
+    click_on('Play Maze')
+    click_on('Start game with default maze')
+    visit('/')
+    click_on('Maze Editor')
+    click_on('Paths')
+  end
+  it('deletes a path') do
+    click_on('Path from Room #0 to Room #1')
+    click_on('Edit')
+    click_on('Delete Room')
+    expect(page).to have_no_content('Path from Room #0 to Room #1')
   end
 end

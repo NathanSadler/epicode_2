@@ -122,6 +122,11 @@ class Path
     return @@all_paths.values
   end
 
+  # Deletes itself
+  def delete
+    @@all_paths.delete(@id)
+  end
+
   # Returns the direction opposite of whatever was given
   def self.get_opposite_direction(direction)
     directions_a = {1 => :north, -1 => :south, 2 => :east, -2 => :west}

@@ -41,7 +41,7 @@
 
 <!-- Add delete option if form is not being used for creation-->
 <% if @options[:secret_method] %>
-  <form action="/editor/path/delete/<%= @options[:room_id] %>" method="post">
+  <form action="/editor/path/delete/<%= @options[:path_id] %>" method="post">
     <input name="_method" type="hidden" value="delete">
     <button type="submit">Delete Room</button>
   </form>
