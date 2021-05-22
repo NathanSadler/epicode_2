@@ -176,7 +176,6 @@ patch('/editor/path/update/:id') do
   path_to_update.update_room_b(room_b, direction_b)
 
   #Updates the obstacle or sets it to nil as neccessary
-  binding.pry
   if(params[:obstacle] != "None")
     path_to_update.update_obstacle(params[:obstacle].to_i)
   else
