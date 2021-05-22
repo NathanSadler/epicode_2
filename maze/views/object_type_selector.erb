@@ -1,0 +1,6 @@
+<h1>Select an <%= @object_name %> type to create</h1>
+<!-- Hash should be {type_name => create_action}-->
+<% @types.keys.each do |type| %>
+  <a href="<%= @types[type] %>"><%= type %></a>
+  <br>
+<% end %>

@@ -90,8 +90,70 @@ get('/editor/item') do
   erb(:menu_template)
 end
 
+# Lets user select between creating a collectible item and a interactable one
 get('/editor/item/create') do
-  "dummy for item creation form"
+  @object_name = "Item"
+  @types = {
+    "Collectible Item" => '/editor/item/create/collectible',
+    "Interactable Item" => '/editor/item/create/interactable'
+  }
+  erb(:object_type_selector)
+end
+
+# Form for creating collectible item
+get('/editor/item/create/collectible') do
+  @options = {
+    :header_action => "Create",
+    :object_name => "item",
+    :action => "/editor/item/create"
+  }
+
+  @fields = {
+    :item_name => ["text", {
+      :name_and_id => "item_name",
+      :label_text => "Item Name"
+      }]
+  }
+  erb(:generic_editor)
+end
+
+# Form for creating an interactable item
+get('/editor/item/create/interactable') do
+  @options = {
+    :header_action => "Create",
+    :object_name => "item",
+    :action => "/editor/item/create"
+  }
+
+  @fields = {
+    :item_name => {
+      :field_type => "text",
+      :name_and_id => "item_name",
+      :label_text => "Item Name"},
+    :linked_obstacles => {
+      :field_type => "checkboxes",
+      :section_header => "Linked Obstacles",
+      :name_id_prefix => "obstacle",
+      :checkable_options => Obstacle.all_obstacles
+      }
+  }
+  erb(:generic_editor)
+end
+
+post('/editor/item/create') do
+
+end
+
+get('/editor/item/read/:id') do
+  "foobar"
+end
+
+get('/editor/item/update/:id') do
+  "foobar"
+end
+
+patch('/editor/item/update/:id') do
+
 end
 
 # All for handling obstacle CRUD

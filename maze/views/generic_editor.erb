@@ -1,0 +1,38 @@
+<h1><%= @options[:header_action] %> <%= @options[:object_name].capitalize %></h1>
+
+<form action="<%= @options[:action] %>" method="post">
+  <!-- Add hidden input if form isn't being used for creation -->
+  <% if @options[:secret_method] %>
+    <input name="_method" type="hidden" value="patch">
+  <% end %>
+
+  <!-- Display input fields -->
+  <!-- fields hash should be like field_name => {options} -->
+  <% @fields.keys.each do |field| %>
+    <% field_type = @fields[field][:field_type] %>
+    <!-- Text fields -->
+    <% if field_type == "text" %>
+      <% nameid = @fields[field][:name_and_id] %>
+      <% label_text = @fields[field][:label_text]%>
+      <label for="<%= nameid %>"><%= label_text %></label>
+      <input id="<% nameid %>" name="<%= nameid %>" type="text">
+    <!-- Checkboxes -->
+    <% elsif field_type == "checkboxes" %>
+      <!-- Section Header -->
+      <p><%= @fields[field][:section_header]%>
+      <br>
+      <!-- Add checkbox for every option -->
+      <% @fields[field][:checkable_options].each do |option| %>
+        <% option_name_id = "#{@fields[field][:name_id_prefix]}_#{option.id}" %>
+        <label for="<%= option_name_id %>"><%= option.name %></label>
+        <input type="checkbox" id="<%= option_name_id %>" name="<%= option_name_id %>">
+      <% end %>
+      </p>
+    <% else %>
+      <p>Something went wrong<p>
+    <% end %>
+  <% end %>
+
+  <br>
+  <button type="submit">Submit</button>
+</form>
