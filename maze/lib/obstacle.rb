@@ -13,6 +13,10 @@ class Obstacle
     @@obstacle_list[name] = self
   end
 
+  def update
+    @@obstacle_list[@name] = self
+  end
+
   def self.all_obstacles
     @@obstacle_list.values
   end

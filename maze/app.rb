@@ -270,8 +270,18 @@ get('/editor/obstacle') do
 end
 
 get('/editor/obstacle/create') do
-  "dummy for obstacle creation form"
+  @object_name = "Obstacle"
+  @types = {
+    "Item Obstacle" => '/editor/obstacle/create/item',
+    "Environmental Obstacle" => '/editor/obstacle/create/environmental'
+  }
+  erb(:object_type_selector)
 end
+
+get('/editor/obstacle/create/item') do
+  
+end
+
 
 # All for handling path CRUD
 get('/editor/path') do

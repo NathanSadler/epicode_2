@@ -28,6 +28,26 @@
         <input type="checkbox" id="<%= option_name_id %>" name="<%= option_name_id %>">
       <% end %>
       </p>
+      <!-- Drop down box -->
+      <!-- Hashes should be like:
+      {
+      :key => "key_name",
+      :name_and_id => "name_and_id",
+      :label_text => "label_text",
+      :options => [
+      ["value_a", "text_a"], ["value_b", "text_b"], ...
+      ]
+    }
+     -->
+    <% elsif field_type == "dropdown" %>
+      <% nameid = @fields[field][:name_and_id] %>
+      <% label_text = @fields[field][:label_text] %>
+      <label for="<%= nameid %>"><%= label_text %></label>
+      <select name="<%= nameid %>" for="<%= nameid %>">
+        <% for @fields[field][:options].each do |option| %>
+          <option value="<%= option[0] %>"><%= option[1] %></option>
+        <% end %>
+      </select>
     <% else %>
       <p>Something went wrong<p>
     <% end %>
