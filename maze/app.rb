@@ -279,7 +279,32 @@ get('/editor/obstacle/create') do
 end
 
 get('/editor/obstacle/create/item') do
-  
+  @options = {
+    :header_action => "Create",
+    :object_name => "obstacle",
+    :action => "/editor/obstacle/create"
+  }
+
+  collectible_items =
+
+  @fields = {
+    :item_name => {
+      :field_type => "text",
+      :name_and_id => "obstacle_name",
+      :label_text => "Obstacle Name"
+    },
+    :block_text => {
+      :field_type => "text",
+      :name_and_id => "block_text",
+      :label_text => "Block Text"
+    },
+    :pass_text => {
+      :field_type => "text",
+      :name_and_id => "pass_text",
+      :label_text => "Pass Text"
+    }
+  }
+  erb(:generic_editor)
 end
 
 

@@ -43,11 +43,11 @@
       <% nameid = @fields[field][:name_and_id] %>
       <% label_text = @fields[field][:label_text] %>
       <label for="<%= nameid %>"><%= label_text %></label>
-      <select name="<%= nameid %>" for="<%= nameid %>">
-        <% for @fields[field][:options].each do |option| %>
-          <option value="<%= option[0] %>"><%= option[1] %></option>
+       <select name="<%= nameid %>" for="<%= nameid %>">
+         <% @fields[field][:options].each do |opt| %>
+          <option value="<%= opt[0] %>"><%= opt[1] %></option>
         <% end %>
-      </select>
+       </select>
     <% else %>
       <p>Something went wrong<p>
     <% end %>

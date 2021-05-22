@@ -36,6 +36,10 @@ class Item
     @@all_items.values
   end
 
+  def self.all_collectible_items
+    all_items.select {|item| !item.is_a?(InteractableItem)}
+  end
+
   def self.item_hash
     @@all_items
   end
@@ -71,6 +75,10 @@ class InteractableItem < Item
 
   def linked_obstacles
     @linked_obstacles
+  end
+
+  def self.all_interactable_items
+    all_items.select {|item| item.is_a?(InteractableItem)}
   end
 
   # linked_obstacles should be an array
