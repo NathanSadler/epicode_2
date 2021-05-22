@@ -135,6 +135,7 @@ post('/editor/path/create') do
   redirect to('/editor/path')
 end
 
+# Displays a path's details
 get('/editor/path/read/:id') do
   path = Path.get_path_by_id(params[:id].to_i)
 
@@ -150,6 +151,43 @@ get('/editor/path/read/:id') do
   erb(:reader)
 end
 
+get('/editor/path/update/:id') do
+  path = Path.get_path_by_id(params[:id].to_i)
+  @options = {
+    :header_action => "Update",
+    :action => "/editor/path/update/#{path.id}",
+    :secret_method => "patch",
+    :path_id => path.id
+  }
+  erb(:path_editor)
+end
+
+# Actually updates the Path
+patch('/editor/path/update/:id') do
+  # Gets info needed for updating(except for obstacle)
+  path_to_update = Path.get_path_by_id(params[:id].to_i)
+  room_a = Room.get_room_by_id(params[:room_a].to_i)
+  direction_a = params[:room_a_direction].to_sym
+  room_b = Room.get_room_by_id(params[:room_b].to_i)
+  direction_b = params[:room_b_direction].to_sym
+
+  # updates all non-obstacle attributes
+  path_to_update.update_room_a(room_a, direction_a)
+  path_to_update.update_room_b(room_b, direction_b)
+
+  #Updates the obstacle or sets it to nil as neccessary
+  binding.pry
+  if(params[:obstacle] != "None")
+    path_to_update.update_obstacle(params[:obstacle].to_i)
+  else
+    path_to_update.update_obstacle(nil)
+  end
+
+  # Saves changes to path
+  path_to_update.update
+
+  redirect to("/editor/path/read/#{path_to_update.id}")
+end
 
 # All for handling room CRUD
 get('/editor/room') do

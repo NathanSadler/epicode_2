@@ -30,7 +30,7 @@
   <label for="obstacle">Obstacle</label>
   <select name="obstacle" id="obstacle">
     <option>None</option>
-    <% Obstacle.all_obstacles do |obstacle| %>
+    <% Obstacle.all_obstacles.each do |obstacle| %>
       <option value="<%= obstacle.id %>"><%= obstacle.name %></option>
     <% end %>
   </select>

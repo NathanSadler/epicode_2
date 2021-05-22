@@ -54,7 +54,7 @@ class Obstacle
   end
 
   def self.get_obstacle_by_id(id)
-    @@obstacle_list[id]
+    (@@obstacle_list.values.select {|obs| obs.id == id})[0]
   end
 
   def self.clear

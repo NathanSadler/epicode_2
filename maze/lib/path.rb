@@ -29,6 +29,46 @@ class Path
     (self.id == other_path.id)
   end
 
+  # Updates itself in the mock database
+  def update
+    @@all_paths[@id] = self
+  end
+
+  # Updates the obstacle. If the given argument is an integer, it sets the
+  # obstacle to the obstacle with that integer as its id
+  def update_obstacle(new_obstacle)
+    if(new_obstacle.is_a?(Integer))
+      @obstacle = Obstacle.get_obstacle_by_id(new_obstacle)
+    else
+      @obstacle = new_obstacle
+    end
+    @@all_paths[@id] = self
+  end
+
+  # Updates room a
+  def update_room_a(new_room, new_direction)
+    if(new_room.is_a?(Integer))
+      @room_a = Room.get_room_by_id(new_room)
+    else
+      @room_a = new_room
+    end
+    @direction_a = new_direction
+    @@all_paths[@id] = self
+    @room_a.update_paths(new_direction, self)
+  end
+
+  # Updates room b
+  def update_room_b(new_room, new_direction)
+    if(new_room.is_a?(Integer))
+      @room_b = Room.get_room_by_id(new_room)
+    else
+      @room_b = new_room
+    end
+    @direction_b = new_direction
+    @@all_paths[@id] = self
+    @room_b.update_paths(new_direction, self)
+  end
+
   def self.clear
     @@all_paths = {}
     @@path_count = 0
