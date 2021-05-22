@@ -260,6 +260,14 @@ describe('Item CRUD', {:type => :feature}) do
 
     # Make sure selected obstacle displays appropriately
     expect(page).to have_content("large gap")
-
+    expect(page).to have_content("Skeleton Lever")
+  end
+  it('updates items') do
+    visit('/editor/item')
+    click_on("Skeleton Lever")
+    click_on('Edit')
+    fill_in('item_name', :with => "Rod of activation")
+    click_on('Submit')
+    expect(page).to have_content("Rod of activation")
   end
 end

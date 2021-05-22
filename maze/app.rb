@@ -197,18 +197,61 @@ get('/editor/item/update/:id/collectible') do
   }
 
   @fields = {
-
+    :item_name => {
+      :field_type => "text",
+      :name_and_id => "item_name",
+      :label_text => "Item Name"
+    }
   }
   erb(:generic_editor)
 end
 
 # Edit form for interactable Items
 get ('/editor/item/update/:id/interactable') do
+  @options = {
+    :header_action => "Create",
+    :object_name => "item",
+    :action => "/editor/item/update/#{params[:id]}",
+    :secret_method => "patch"
+  }
 
+  @fields = {
+    :item_name => {
+      :field_type => "text",
+      :name_and_id => "item_name",
+      :label_text => "Item Name"},
+    :interaction_text => {
+      :field_type => "text",
+      :name_and_id => "interaction_text",
+      :label_text => "Interaction Text"
+    },
+    :linked_obstacles => {
+      :field_type => "checkboxes",
+      :section_header => "Linked Obstacles",
+      :name_id_prefix => "obstacle",
+      :checkable_options => OtherObstacle.all_obstacles
+      }
+  }
+  erb(:generic_editor)
 end
 
+# Actually updates an item
 patch('/editor/item/update/:id') do
+  item = Item.get_item_by_id(params[:id].to_i)
+  # Sets item name
+  item.set_name(params[:item_name])
 
+  # Clears linked obstacles and applies new ones
+  if item.is_a?(InteractableItem)
+    item.set_linked_obstacles([])
+    obstacle_keys = params.keys.select {|key| key.match?(/obstacle_\d+\b/)}
+    obstacles = []
+    obstacle_keys.each do |key|
+      obstacles.push(Obstacle.get_obstacle_by_id(key.match('\d\b').to_s.to_i))
+    end
+    item.set_linked_obstacles(obstacles)
+  end
+  redirect to('/editor/item')
 end
 
 # All for handling obstacle CRUD

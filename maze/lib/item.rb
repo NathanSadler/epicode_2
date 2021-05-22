@@ -13,8 +13,18 @@ class Item
     (self.name == other_item.name) && (self.id == other_item.id)
   end
 
+  # Modifies this item in the mock db
+  def update
+    @@all_items[@id] = self
+  end
+
   def id
     @id
+  end
+
+  def set_name(new_name)
+    @name = new_name
+    update
   end
 
   def name
@@ -63,8 +73,10 @@ class InteractableItem < Item
     @linked_obstacles
   end
 
+  # linked_obstacles should be an array
   def set_linked_obstacles(linked_obstacles)
     @linked_obstacles = linked_obstacles
+    update
   end
 
   # Switches state of the linked obstacles
