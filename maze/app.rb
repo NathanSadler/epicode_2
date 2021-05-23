@@ -387,17 +387,17 @@ get('/editor/obstacle/read/:id') do
   if obstacle.is_a?(ItemObstacle)
     @edit_link = "/editor/obstacle/update/:id/item"
     required_item = Item.get_item_by_id(params[:required_item].to_i)
-    @attributes.save("Required Item: ", required_item.name)
+    @attributes.store("Required Item: ", required_item.name)
   else
     @edit_link = "/editor/obstacle/update/:id/environmental"
-    @attributes.save("Clearable by default? ", obstacle.initial_state)
+    @attributes.store("Clearable by default", obstacle.initial_state)
   end
 
   # Gets the obstacle name and common attributes
   @name = obstacle.name
-  @attributes["obstacle_name"] = obstacle.name
-  @attributes["block_text"] = obstacle.block_text
-  @attributes["pass_text"] = obstacle.pass_text
+  @attributes["Obstacle Name"] = obstacle.name
+  @attributes["Block Text"] = obstacle.block_text
+  @attributes["Pass text"] = obstacle.pass_text
 
   erb(:reader)
 end
