@@ -38,4 +38,17 @@ describe '#Room' do
     end
   end
 
+  describe('#restore_items') do
+    it("adds all items ever added to the room back") do
+      Item.clear
+      item_a = Item.new("test item 1")
+      item_b = Item.new("test item 2")
+      test_room = Room.new({item_a.id => item_a})
+      test_room.add_item(item_b)
+      test_room.items.delete(item_a.id)
+      test_room.restore_items
+      expect(test_room.items).to(eq({item_a.id => item_a, item_b.id => item_b}))
+    end
+  end
+
 end

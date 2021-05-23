@@ -10,6 +10,7 @@ class Room
     @paths = {:north => nil, :south => nil, :east => nil, :west => nil}
     @id = @@room_count
     @items = items
+    @item_log = {}
     @name = name || @id
     @@all_rooms[@id] = self
     @@room_count += 1
@@ -29,6 +30,22 @@ class Room
   def add_item(item)
     @items[item.id] = item
     @@all_rooms[@id] = self
+    update_item_log
+
+  end
+
+  # adds all items ever added to the room back
+  def restore_items
+    @items = @item_log
+    update
+  end
+
+  # Updates item log
+  def update_item_log
+    @items.keys.each do |item_key|
+      @item_log.store(item_key, @items[item_key])
+    end
+    update
   end
 
   # Updates itself in the mock db

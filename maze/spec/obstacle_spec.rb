@@ -49,6 +49,7 @@ describe '#OtherObstacle' do
     it("reverses the state of the obstacle") do
       expect(@other_obstacle.switch_state).to(eq(true))
       expect(@other_obstacle2.switch_state).to(eq(false))
+      expect(OtherObstacle.all_obstacles[0].can_pass?).to(eq(true))
     end
     it("updates itself in obstacle_list") do
       @other_obstacle.switch_state
@@ -61,6 +62,19 @@ describe '#OtherObstacle' do
       test_obstacle = ItemObstacle.new(:test_obstacle, :key)
       expect(OtherObstacle.all_obstacles).to(eq([@other_obstacle,
         @other_obstacle2]))
+    end
+  end
+
+  describe('.set_all_to_default') do
+    it("resets all obstacles to their default state") do
+      Obstacle.clear
+      obs_1 = OtherObstacle.new("Should default to false")
+      obs_1.switch_state
+      obs_2 = OtherObstacle.new("Should default to true", true)
+      obs_2.switch_state
+      OtherObstacle.set_all_to_default
+      expect(Obstacle.all_obstacles[0].can_pass?).to(eq(false))
+      expect(Obstacle.all_obstacles[1].can_pass?).to(eq(true))
     end
   end
 

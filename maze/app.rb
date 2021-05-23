@@ -29,6 +29,17 @@ get('/game/startup/default') do
   redirect to('/game')
 end
 
+# Sets up and starts the current maze.
+get('/game/startup/current') do
+  # Creates the player
+  player = Player.new(Room.start_room.id)
+
+  # Reset environmental obstacles to their default states
+  OtherObstacle.set_all_to_default
+
+  redirect to('/game')
+end
+
 # Displays the room the player is in
 get('/game') do
   @player = Player.current_player

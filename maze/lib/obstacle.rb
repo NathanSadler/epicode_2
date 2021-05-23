@@ -137,6 +137,15 @@ class OtherObstacle < Obstacle
     update
   end
 
+  # Sets the obstacle to a specific state
+  def set_state(state)
+    @current_state = state
+  end
+
+  def self.set_all_to_default
+    OtherObstacle.all_obstacles.map {|obs| obs.set_state(obs.initial_state)}
+  end
+
   # Switches the current_state. Returns new state
   def switch_state
     @current_state = !@current_state
