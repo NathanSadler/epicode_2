@@ -151,6 +151,11 @@ get('/editor/item/create/interactable') do
       :field_type => "text",
       :name_and_id => "item_name",
       :label_text => "Item Name"},
+    :interaction_text => {
+      :field_type => "text",
+      :name_and_id => "interaction_text",
+      :label_text => "Interaction Text"
+    },
     :linked_obstacles => {
       :field_type => "checkboxes",
       :section_header => "Linked Obstacles",
@@ -213,7 +218,7 @@ get('/editor/item/update/:id/collectible') do
     :header_action => 'Edit',
     :action => "/editor/item/update/#{params[:id].to_i}",
     :object_name => 'item',
-    :object_id => "/editor/item/update/#{params[:id].to_i}",
+    :object_id => params[:id],
     :secret_method => 'patch'
   }
 
