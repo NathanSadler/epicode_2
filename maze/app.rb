@@ -82,6 +82,12 @@ get('/game/item_handler/:item_id') do
   redirect to('/game')
 end
 
+# Resets maze to default
+get('/editor/reset') do
+  setup_default_maze
+  redirect to('/editor')
+end
+
 # All for handling item CRUD
 get('/editor/item') do
   @object_name = "item"
@@ -349,6 +355,53 @@ get('/editor/obstacle/create/environmental') do
   }
   erb(:generic_editor)
 end
+
+post('/editor/obstacle/create') do
+  # Gets attributs shared between both types of obstacles
+  obstacle_name = params[:obstacle_name]
+  block_text = params[:block_text]
+  pass_text = params[:pass_text]
+
+  # Detects what type of obstacle this needs to be and creates it
+  if params.keys.include?("required_item")
+    required_item = Item.get_item_by_id(params[:required_item].to_i)
+    new_obstacle = ItemObstacle.new(obstacle_name, required_item, block_text, pass_text)
+  else
+    if params[:clearable_by_default] == "true"
+      already_clearable = true
+    else
+      already_clearable = false
+    end
+    new_obstacle = OtherObstacle.new(obstacle_name, already_clearable, block_text, pass_text)
+  end
+  redirect to("editor/obstacle/read/#{new_obstacle.id}")
+end
+
+get('/editor/obstacle/read/:id') do
+  obstacle = Obstacle.get_obstacle_by_id(params[:id].to_i)
+  @attributes = {}
+
+  # Get links for editing and returning to obstacle menu, plus the unique
+  # attribute
+  @back_link = "/editor/obstacle"
+  if obstacle.is_a?(ItemObstacle)
+    @edit_link = "/editor/obstacle/update/:id/item"
+    required_item = Item.get_item_by_id(params[:required_item].to_i)
+    @attributes.save("Required Item: ", required_item.name)
+  else
+    @edit_link = "/editor/obstacle/update/:id/environmental"
+    @attributes.save("Clearable by default? ", obstacle.initial_state)
+  end
+
+  # Gets the obstacle name and common attributes
+  @name = obstacle.name
+  @attributes["obstacle_name"] = obstacle.name
+  @attributes["block_text"] = obstacle.block_text
+  @attributes["pass_text"] = obstacle.pass_text
+
+  erb(:reader)
+end
+
 
 # All for handling path CRUD
 get('/editor/path') do

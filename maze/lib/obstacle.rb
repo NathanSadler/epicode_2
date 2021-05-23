@@ -89,9 +89,12 @@ end
 
 class OtherObstacle < Obstacle
 
+  attr_reader :initial_state
+
   def initialize(name, current_state=false, block_text=nil, pass_text=nil)
     super(name, block_text, pass_text)
     @current_state = current_state
+    @initial_state = current_state
     @@obstacle_list[name] = self
   end
 
