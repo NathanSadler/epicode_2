@@ -278,3 +278,76 @@ describe('Item CRUD', {:type => :feature}) do
     expect(page).to have_no_content("Rod of activation")
   end
 end
+
+describe('Obstacle CRUD', {:type => :feature}) do
+  before(:all) do
+    visit('/')
+    click_on('Maze Editor')
+    click_on('Reset Maze to Default')
+    click_on('Obstacles')
+  end
+  after(:all) do
+    Item.clear
+    Obstacle.clear
+    Room.clear
+    Path.clear
+  end
+  it('creates an item obstacle') do
+    click_on('Add a obstacle')
+    click_on('Item Obstacle')
+    fill_in('obstacle_name', :with => "Test Item Obstacle")
+    fill_in('block_text', :with => "Test Block Text")
+    fill_in('pass_text', :with => "Test Pass Text")
+    click_on('Submit')
+    expect(page).to have_content("Test Item Obstacle")
+  end
+  it('creates an environmental obstacle') do
+    visit('/editor/obstacle/create')
+    click_on('Environmental Obstacle')
+    fill_in('obstacle_name', :with => "Test Environmental Obstacle")
+    fill_in('block_text', :with => "Test Block Text")
+    fill_in('pass_text', :with => "Test Pass Text")
+    click_on('Submit')
+    expect(page).to have_content("Test Environmental Obstacle")
+  end
+  it('reads obstacles') do
+    visit('/editor/obstacle')
+    click_on("Test Item Obstacle")
+    expect(page).to have_content("Test Item Obstacle")
+    expect(page).to have_content("Test Block Text")
+    expect(page).to have_content("Required Item: key")
+  end
+  it('updates item obstacles') do
+    Item.new("Skeleton Key")
+    visit('/editor/obstacle')
+    click_on("Test Item Obstacle")
+    click_on("Edit")
+    fill_in('obstacle_name', :with => "Updated Test Item Obstacle")
+    fill_in('block_text', :with => "Updated Test Block Text")
+    fill_in('pass_text', :with => "Updated Test Pass Text")
+    select 'Skeleton Key', from: "Item required to pass"
+    click_on('Submit')
+    expect(page).to have_content("Updated Test Item Obstacle")
+    expect(page).to have_content("Updated Test Block Text")
+    expect(page).to have_content("Required Item: Skeleton Key")
+  end
+  it('updates environmental obstacles') do
+    visit('/editor/obstacle')
+    click_on("Test Environmental Obstacle")
+    click_on("Edit")
+    #save_and_open_page
+    fill_in('obstacle_name', :with => "Updated Test Environmental Obstacle")
+    fill_in('block_text', :with => "Updated Test Block Text")
+    fill_in('pass_text', :with => "Updated Test Pass Text")
+    select 'Yes', from: 'Clearable by default?'
+    click_on('Submit')
+    expect(page).to have_content("Updated Test Environmental Obstacle")
+    expect(page).to have_content("Updated Test Block Text")
+    expect(page).to have_content("Clearable by default: true")
+  end
+  it("doesn't create duplicate obstacles when updating") do
+    visit('/editor/obstacle')
+    expect(page).to have_content("Updated Test Environmental Obstacle", count: 1)
+    expect(page).to have_content("Updated Test Item Obstacle", count: 1)
+  end
+end

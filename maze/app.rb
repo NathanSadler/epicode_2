@@ -166,7 +166,6 @@ end
 
 
 get('/editor/item/read/:id') do
-  #binding.pry
   item = Item.get_item_by_id(params[:id].to_i)
   @name = item.name
   @back_link = "/editor/item"
@@ -381,25 +380,89 @@ get('/editor/obstacle/read/:id') do
   obstacle = Obstacle.get_obstacle_by_id(params[:id].to_i)
   @attributes = {}
 
-  # Get links for editing and returning to obstacle menu, plus the unique
-  # attribute
+  # Get the unique attribute
   @back_link = "/editor/obstacle"
   if obstacle.is_a?(ItemObstacle)
-    @edit_link = "/editor/obstacle/update/:id/item"
-    required_item = Item.get_item_by_id(params[:required_item].to_i)
-    @attributes.store("Required Item: ", required_item.name)
+    required_item = Item.get_item_by_id(obstacle.get_required_item.id)
+    @attributes.store("Required Item", required_item.name)
   else
-    @edit_link = "/editor/obstacle/update/:id/environmental"
     @attributes.store("Clearable by default", obstacle.initial_state)
   end
 
   # Gets the obstacle name and common attributes
+  @edit_link = "/editor/obstacle/update/#{obstacle.id}"
   @name = obstacle.name
   @attributes["Obstacle Name"] = obstacle.name
   @attributes["Block Text"] = obstacle.block_text
   @attributes["Pass text"] = obstacle.pass_text
 
   erb(:reader)
+end
+
+# Form for updating an obstacle
+get('/editor/obstacle/update/:id') do
+  @obstacle = Obstacle.get_obstacle_by_id(params[:id].to_i)
+  @options = {
+    :header_action => "Edit",
+    :object_name => "obstacle",
+    :action => "/editor/obstacle/update/#{@obstacle.id}",
+    :secret_method => 'patch'
+  }
+  @fields = {
+    :item_name => {
+      :field_type => "text",
+      :name_and_id => "obstacle_name",
+      :label_text => "Obstacle Name"
+    },
+    :block_text => {
+      :field_type => "text",
+      :name_and_id => "block_text",
+      :label_text => "Block Text"
+    },
+    :pass_text => {
+      :field_type => "text",
+      :name_and_id => "pass_text",
+      :label_text => "Pass Text"
+    },
+    :unique_attributes => {
+      :field_type => "dropdown"
+    }
+  }
+
+  if @obstacle.is_a?(ItemObstacle)
+    collectible_items = Item.all_collectible_items
+    collectible_selections = []
+    collectible_items.each do |item|
+      collectible_selections.push([item.id, item.name])
+    end
+    @fields[:unique_attributes][:name_and_id] = "required_item"
+    @fields[:unique_attributes][:label_text] = "Item required to pass"
+    @fields[:unique_attributes][:options] = collectible_selections
+  else
+    @fields[:unique_attributes][:name_and_id] = "clearable_by_default"
+    @fields[:unique_attributes][:label_text] = "Clearable by default?"
+    @fields[:unique_attributes][:options] = [["false", "No"], ["true", "Yes"]]
+  end
+  erb(:generic_editor)
+end
+
+# Actually updates the obstacle
+patch('/editor/obstacle/update/:id') do
+  obstacle = Obstacle.get_obstacle_by_id(params[:id].to_i)
+  obstacle.set_name(params[:obstacle_name])
+  obstacle.set_block_text(params[:block_text])
+  obstacle.set_pass_text(params[:pass_text])
+
+  if(obstacle.is_a?(OtherObstacle))
+    if params[:clearable_by_default] == "true"
+      obstacle.set_initial_state(true)
+    else
+      obstacle.set_initial_state(false)
+    end
+  else
+    obstacle.set_required_item(Item.get_item_by_id(params[:required_item].to_i))
+  end
+  redirect to("/editor/obstacle/read/#{obstacle.id}")
 end
 
 

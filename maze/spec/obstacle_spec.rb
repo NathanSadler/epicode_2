@@ -23,6 +23,13 @@ describe '#ItemObstacle' do
     end
   end
 
+  describe('.update') do
+    it("doesn't add a new ItemObstacle to all_obstacles") do
+    @item_obstacle.update
+    expect(Obstacle.all_obstacles).to(eq([@item_obstacle]))
+    end
+  end
+
   describe('#can_pass?') do
     it('Is false if the required item is not in the inventory') do
       expect(@item_obstacle.can_pass?([:rope, :candle])).to(eq(false))
