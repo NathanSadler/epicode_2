@@ -276,6 +276,7 @@ describe('Item CRUD', {:type => :feature}) do
     click_on("Edit")
     click_on("Delete")
     expect(page).to have_no_content("Rod of activation")
+    expect(page).to have_content("Items")
   end
 end
 
@@ -349,5 +350,14 @@ describe('Obstacle CRUD', {:type => :feature}) do
     visit('/editor/obstacle')
     expect(page).to have_content("Updated Test Environmental Obstacle", count: 1)
     expect(page).to have_content("Updated Test Item Obstacle", count: 1)
+  end
+  it("deletes obstacles") do
+    temp_obs = OtherObstacle.new("to be deleted")
+    visit('/editor/obstacle')
+    click_on("to be deleted")
+    click_on("Edit")
+    click_on("Delete")
+    expect(page).to have_no_content("to be deleted")
+    expect(page).to have_content("Obstacles")
   end
 end

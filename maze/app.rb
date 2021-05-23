@@ -194,10 +194,12 @@ end
 
 # Edit form for collectible items
 get('/editor/item/update/:id/collectible') do
+  @object_name = 'item'
   @options = {
     :header_action => 'Edit',
     :action => "/editor/item/update/#{params[:id].to_i}",
     :object_name => 'item',
+    :object_id => "/editor/item/update/#{params[:id].to_i}",
     :secret_method => 'patch'
   }
 
@@ -213,9 +215,11 @@ end
 
 # Edit form for interactable Items
 get ('/editor/item/update/:id/interactable') do
+  @object_name = "item"
   @options = {
     :header_action => "Create",
     :object_name => "item",
+    :object_id => params[:id],
     :action => "/editor/item/update/#{params[:id]}",
     :secret_method => "patch"
   }
@@ -402,10 +406,12 @@ end
 # Form for updating an obstacle
 get('/editor/obstacle/update/:id') do
   @obstacle = Obstacle.get_obstacle_by_id(params[:id].to_i)
+  @object_name = "obstacle"
   @options = {
     :header_action => "Edit",
-    :object_name => "obstacle",
     :action => "/editor/obstacle/update/#{@obstacle.id}",
+    :object_name => "obstacle",
+    :object_id => @obstacle.id,
     :secret_method => 'patch'
   }
   @fields = {
@@ -463,6 +469,13 @@ patch('/editor/obstacle/update/:id') do
     obstacle.set_required_item(Item.get_item_by_id(params[:required_item].to_i))
   end
   redirect to("/editor/obstacle/read/#{obstacle.id}")
+end
+
+# Deletes an obstacle
+delete('/editor/obstacle/delete/:id') do
+  obstacle = Obstacle.get_obstacle_by_id(params[:id].to_i)
+  obstacle.delete
+  redirect to("/editor/obstacle")
 end
 
 

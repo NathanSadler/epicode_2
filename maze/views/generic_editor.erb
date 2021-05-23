@@ -59,7 +59,7 @@
 </form>
 
 <% if @options[:secret_method] %>
-  <form action="/editor/<%= @object_name %>/delete" method="post">
+  <form action="/editor/<%= @object_name %>/delete/<%= @options[:object_id] %>" method="post">
     <input name="_method" type="hidden" value="delete">
     <button type="submit">Delete</button>
   </form>
