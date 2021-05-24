@@ -28,8 +28,8 @@ def setup_default_maze
 
   # Creates ItemObstacle(s)
   locked_door = ItemObstacle.new("locked door", key,
-    "The door to this path is locked.", "The door to this path is locked, but " +
-  "you are able to unlock it with your key.")
+    "The door to this path is locked.", "The door to this path was locked, but " +
+  "you were able to unlock it with your key.")
 
   # Creates InteractableItem object(s)
   lever = InteractableItem.new("lever", [large_gap], "Flick Lever")

@@ -19,7 +19,7 @@ class Path
     @direction_b = direction_b || Path.get_opposite_direction(direction_a)
     @obstacle = obstacle
     @obs_id = nil
-    if !obstacle.nil?
+    if obstacle
       @obs_id = obstacle.id
     end
     @id = @@path_count
@@ -41,6 +41,7 @@ class Path
   # Updates the obstacle. If the given argument is an integer, it sets the
   # obstacle to the obstacle with that integer as its id
   def update_obstacle(new_obstacle)
+    # Debug note: obs_id lost by this point
     if(new_obstacle.is_a?(Integer))
       @obstacle = Obstacle.get_obstacle_by_id(new_obstacle)
     else
@@ -80,7 +81,6 @@ class Path
 
   def restore_obstacle
     if !@obs_id.nil?
-      binding.pry
       update_obstacle(@obs.id)
       update
     end
@@ -121,7 +121,6 @@ class Path
     if self.can_pass?
       foo = [@room_a, @room_b].select {|room| room != starting_room}
       if(!@obstacle.nil? && @obstacle.is_a?(ItemObstacle))
-        @obstacle = nil
         @@all_paths[@id] = self
       end
       return foo[0]

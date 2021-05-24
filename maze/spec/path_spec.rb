@@ -66,17 +66,6 @@ describe '#Path' do
     'given, but the path cannot be travelled because of an obstacle') do
       expect(@pathb.travel_from(@room2)).to(eq("Block text"))
     end
-    it('sets its own obstacle to nil if the obstacle is an ItemObstacle and '+
-    'the user is able to bypass it') do
-      Player.new
-      key = Item.new("key")
-      Player.current_player.add_to_inventory(key)
-      door = ItemObstacle.new("door", key)
-      tunnel = Path.new(@room0, :east, @room1, :west, door)
-      expect(tunnel.obstacle.nil?).to(eq(false))
-      tunnel.travel_from(@room0)
-      expect(tunnel.obstacle.nil?).to(eq(true))
-    end
   end
 
   describe('#name') do

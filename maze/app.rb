@@ -35,17 +35,11 @@ get('/game/startup/current') do
   player = Player.new(Room.start_room.id)
   # Reset environmental obstacles to their default states
   OtherObstacle.set_all_to_default
-  #Restores ItemObstacles to Paths
+
   # Restore the items of each room
   Room.all_rooms.each do |room|
     room.restore_items
     room.update
-  end
-  # Restores obstacles of each path
-  Path.all_paths.each do |path|
-    if !path.obstacle.nil?
-      path.restore_obstacle
-    end
   end
   # Begin game
   redirect to('/game')

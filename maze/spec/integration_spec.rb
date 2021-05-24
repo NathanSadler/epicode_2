@@ -471,6 +471,7 @@ describe("creating and playing a custom maze", {:type => :feature}) do
     expect(page).to have_content('Pick Up')
     Player.current_player.move_to_room(1)
     visit('/game')
+    #binding.pry
     click_on('Go north')
     expect(page).to have_content('The door to this path is locked.')
     Player.current_player.move_to_room(2)
