@@ -361,3 +361,61 @@ describe('Obstacle CRUD', {:type => :feature}) do
     expect(page).to have_content("Obstacles")
   end
 end
+
+describe("creating and playing a custom maze", {:type => :feature}) do
+  before(:all) do
+    visit('/editor')
+    click_on('Reset Maze to Default')
+    pwall = OtherObstacle.new("Pointless Wall", true,
+    "You are blocked by a pointless wall",
+    "You are not blocked by a pointless wall")
+    plever = InteractableItem.new("Pointless lever", [pwall], "flick lever")
+    proom = Room.new({}, "Pointless Room")
+    proom.add_item(plever)
+    sppath = Path.new(2, :north, 7, :south)
+    ppath = Path.new(1, :east, 7, :west, pwall)
+  end
+  it('plays the maze') do
+    visit('/game/menu')
+    click_on('Start game with current maze')
+    click_on('Go east')
+    click_on('Go south')
+    click_on('Go south')
+    click_on('Look Around')
+    click_on('Pick Up')
+    click_on('Go north')
+    click_on('Go north')
+    click_on('Go north')
+    expect(page).to have_content("Pointless Room")
+    click_on('Look Around')
+    click_on('flick lever')
+    click_on('Go west')
+    click_on('OK')
+    click_on('Look Around')
+    click_on('flick lever')
+    click_on('Go west')
+    click_on('Go north')
+    click_on('Look Around')
+    click_on('Flick Lever')
+    Player.current_player.move_to_room(2)
+    visit('/game')
+    click_on('Go east')
+  end
+  it('can reset the maze before replaying') do
+    visit('/game/menu')
+    click_on('Start game with current maze')
+    Player.current_player.move_to_room(4)
+    visit('/game')
+    click_on('Look Around')
+    expect(page).to have_content('Pick Up')
+    Player.current_player.move_to_room(1)
+    visit('/game')
+    click_on('Go north')
+    expect(page).to have_content('The door to this path is locked.')
+    Player.current_player.move_to_room(2)
+    visit('/game')
+    click_on('Go east')
+    expect(page).to have_content('A large gap prevents you from passing.')
+  end
+
+end

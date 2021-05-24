@@ -18,6 +18,11 @@ class Path
     @direction_a = direction_a
     @direction_b = direction_b || Path.get_opposite_direction(direction_a)
     @obstacle = obstacle
+    if !obstacle.nil?
+      @obs_id = obstacle.id
+    else
+      @obs_id = nil
+    end
     @id = @@path_count
     @@all_paths[@id] = self
     @@path_count += 1
@@ -72,6 +77,13 @@ class Path
   def self.clear
     @@all_paths = {}
     @@path_count = 0
+  end
+
+  def restore_obstacle
+    if !@obs_id.nil?
+      update_obstacle(@obs.id)
+      update
+    end
   end
 
   # Returns true if the path has no obstacle or the obstacle can be cleared. It

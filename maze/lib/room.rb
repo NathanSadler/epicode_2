@@ -36,7 +36,10 @@ class Room
 
   # adds all items ever added to the room back
   def restore_items
-    @items = @item_log
+    temp = @item_log.values
+    temp.each do |logitem|
+      add_item(logitem)
+    end
     update
   end
 

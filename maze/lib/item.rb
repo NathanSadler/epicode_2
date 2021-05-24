@@ -73,6 +73,11 @@ class InteractableItem < Item
     @interaction_text
   end
 
+  def set_interaction_text(new_text)
+    @interaction_text = new_text
+    update
+  end
+
   def linked_obstacles
     @linked_obstacles
   end

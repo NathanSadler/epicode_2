@@ -35,9 +35,19 @@ get('/game/startup/current') do
   player = Player.new(Room.start_room.id)
   # Reset environmental obstacles to their default states
   OtherObstacle.set_all_to_default
+  #Restores ItemObstacles to Paths
   # Restore the items of each room
   Room.all_rooms.each do |room|
     room.restore_items
+    room.update
+  end
+  # Restores obstacles of each path
+  Path.all_paths.each do |path|
+    if !path.obstacle.nil?
+      binding.pry
+      path.restore_obstacle
+      binding.pry
+    end
   end
   # Begin game
   redirect to('/game')
@@ -177,6 +187,7 @@ post('/editor/item/create') do
       end
     end
     new_item = InteractableItem.new(params[:item_name], linked_obstacles)
+    new_item.set_interaction_text(params[:interaction_text])
   else
     new_item = Item.new(params[:item_name])
   end
@@ -193,6 +204,7 @@ get('/editor/item/read/:id') do
     @edit_link = "/editor/item/update/#{item.id}/interactable"
     linked_obstacles = item.linked_obstacles.map {|foo| foo.name}
     linked_obstacles_str = linked_obstacles.join(", ")
+    @attributes["Interaction Text"] = item.interaction_text
   else
     @edit_link = "/editor/item/update/#{item.id}/collectible"
     linked_obstacles = Obstacle.all_obstacles.select {|foo| foo.is_a?(ItemObstacle)}
@@ -269,8 +281,9 @@ patch('/editor/item/update/:id') do
   # Sets item name
   item.set_name(params[:item_name])
 
-  # Clears linked obstacles and applies new ones
+  # Clears linked obstacles and applies new ones. Also saves interaction text
   if item.is_a?(InteractableItem)
+    item.set_interaction_text(params[:interaction_text])
     item.set_linked_obstacles([])
     obstacle_keys = params.keys.select {|key| key.match?(/obstacle_\d+\b/)}
     obstacles = []
