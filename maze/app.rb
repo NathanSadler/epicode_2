@@ -44,9 +44,7 @@ get('/game/startup/current') do
   # Restores obstacles of each path
   Path.all_paths.each do |path|
     if !path.obstacle.nil?
-      binding.pry
       path.restore_obstacle
-      binding.pry
     end
   end
   # Begin game
@@ -534,6 +532,8 @@ post('/editor/path/create') do
   selected_obstacle = params[:obstacle]
   if selected_obstacle == "None"
     selected_obstacle = nil
+  else
+    selected_obstacle = Obstacle.get_obstacle_by_id(params[:obstacle].to_i)
   end
   Path.new(params[:room_a].to_i, params[:room_a_direction].to_sym,
     params[:room_b].to_i, params[:room_b_direction].to_sym, selected_obstacle)

@@ -2,7 +2,7 @@ class Path
   @@all_paths = {}
   @@path_count = 0
 
-  attr_accessor :room_a, :room_b, :direction_a, :direction_b, :obstacle, :id
+  attr_accessor :room_a, :room_b, :direction_a, :direction_b, :obstacle, :id, :obs_id
 
   # Creates a path. Room_a and room_b are the rooms the path connects.
   # Direction_a and direction_b indicate which walls of the rooms enter the
@@ -18,10 +18,9 @@ class Path
     @direction_a = direction_a
     @direction_b = direction_b || Path.get_opposite_direction(direction_a)
     @obstacle = obstacle
+    @obs_id = nil
     if !obstacle.nil?
       @obs_id = obstacle.id
-    else
-      @obs_id = nil
     end
     @id = @@path_count
     @@all_paths[@id] = self
@@ -81,6 +80,7 @@ class Path
 
   def restore_obstacle
     if !@obs_id.nil?
+      binding.pry
       update_obstacle(@obs.id)
       update
     end

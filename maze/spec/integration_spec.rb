@@ -366,14 +366,75 @@ describe("creating and playing a custom maze", {:type => :feature}) do
   before(:all) do
     visit('/editor')
     click_on('Reset Maze to Default')
-    pwall = OtherObstacle.new("Pointless Wall", true,
-    "You are blocked by a pointless wall",
-    "You are not blocked by a pointless wall")
-    plever = InteractableItem.new("Pointless lever", [pwall], "flick lever")
-    proom = Room.new({}, "Pointless Room")
-    proom.add_item(plever)
-    sppath = Path.new(2, :north, 7, :south)
-    ppath = Path.new(1, :east, 7, :west, pwall)
+    #pwall = OtherObstacle.new("Pointless Wall", true,
+    #"You are blocked by a pointless wall",
+    #"You are not blocked by a pointless wall")
+  end
+  it('creates the maze') do
+    # Create the obstacle
+    visit('/editor/obstacle')
+    click_on('Add a obstacle')
+    click_on('Environmental Obstacle')
+    fill_in 'obstacle_name', :with => "pwall"
+    fill_in 'block_text', :with => "blocked by pwall"
+    fill_in 'pass_text', :with => "not blocked by pwall"
+    select 'Yes', from: "Clearable by default?"
+    click_on('Submit')
+    expect(page).to have_content("Clearable by default: true")
+    expect(page).to have_content("Obstacle Name: pwall")
+
+    # Create the InteractableItem
+    visit('/editor/item')
+    click_on('Add a item')
+    click_on('Interactable Item')
+    fill_in('item_name', :with => "plever")
+    fill_in('interaction_text', :with => "flick lever")
+    check('pwall')
+    click_on('Submit')
+    expect(page).to have_content("Interaction Text: flick lever")
+    expect(page).to have_content("Linked Obstacle: pwall")
+
+    # Create the room
+    visit('/editor/room')
+    click_on('Add a room')
+    fill_in('room_name', :with => "proom")
+    choose('Neither')
+    check('plever')
+    click_on('Submit')
+    click_on('proom')
+    expect(page).to have_content('Details for proom')
+    expect(page).to have_content('Items in this room')
+    expect(page).to have_content('plever')
+
+    # Create path between room 2 and new room
+    visit('/editor/path')
+    click_on('Add a path')
+    select 'Room #2', from: 'First Room'
+    select 'north', from: 'First Room direction'
+    select 'proom', from: 'Second Room'
+    select 'south', from: 'Second Room direction'
+    click_on('Submit')
+    click_on('Path from Room #2 to proom')
+    expect(page).to have_content('First Room: Room #2')
+    expect(page).to have_content('Second Room: proom')
+    expect(page).to have_content('First Room Direction: north')
+    expect(page).to have_content('Second Room Direction: south')
+    click_on('Back')
+
+    # Create path between rooom 1 and new room
+    click_on('Add a path')
+    select 'Room #1', from: 'First Room'
+    select 'east', from: 'First Room direction'
+    select 'proom', from: 'Second Room'
+    select 'west', from: 'Second Room direction'
+    select 'pwall', from: 'Obstacle'
+    click_on('Submit')
+    click_on('Path from Room #1 to proom')
+    expect(page).to have_content('First Room: Room #1')
+    expect(page).to have_content('Second Room: proom')
+    expect(page).to have_content('First Room Direction: east')
+    expect(page).to have_content('Second Room Direction: west')
+    expect(page).to have_content('Obstacle: pwall')
   end
   it('plays the maze') do
     visit('/game/menu')
@@ -386,7 +447,7 @@ describe("creating and playing a custom maze", {:type => :feature}) do
     click_on('Go north')
     click_on('Go north')
     click_on('Go north')
-    expect(page).to have_content("Pointless Room")
+    expect(page).to have_content("proom")
     click_on('Look Around')
     click_on('flick lever')
     click_on('Go west')
